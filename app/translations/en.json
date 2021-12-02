@@ -1,0 +1,7 @@
+{
+  "app.containers.DashboardPage.header": "Dashboard",
+  "app.containers.DashboardPage.menu.home": "Home",
+  "app.containers.DashboardPage.menu.studies": "Studies",
+
+  "app.containers.NotFoundPage.header": "Page not found"
+}

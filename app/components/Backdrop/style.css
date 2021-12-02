@@ -1,0 +1,27 @@
+.c-backdrop {
+	position: relative;
+	min-height: 100px;
+}
+
+.c-backdrop .loading {
+	position: absolute;
+	margin: 0 auto;
+	width: 100%;
+	left: 0;
+	right: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	text-align: center;
+	/*z-index: 101;*/
+}
+
+.c-backdrop .backdrop {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	left: 0;
+	top: 0;
+	background: #fff;
+	opacity: 0.8;
+	/*z-index: 100;*/
+}
