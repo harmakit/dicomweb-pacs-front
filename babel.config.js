@@ -10,6 +10,7 @@ module.exports = {
   ],
   plugins: [
     'styled-components',
+    '@babel/plugin-proposal-private-methods',
     '@babel/plugin-proposal-class-properties',
     '@babel/plugin-syntax-dynamic-import',
     '@babel/plugin-syntax-optional-chaining',

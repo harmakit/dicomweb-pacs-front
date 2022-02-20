@@ -4,4 +4,5 @@ export default history;
 export const routes = {
   home: '/',
   studies: '/studies',
+  studySeries: '/studies/:studyId/series',
 };

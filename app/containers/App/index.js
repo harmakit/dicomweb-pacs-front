@@ -5,6 +5,7 @@ import NotFoundPage from '../NotFoundPage/Loadable';
 import DashboardPage from '../DashboardPage/Loadable';
 import DashboardStudiesPage from '../DashboardStudiesPage/Loadable';
 import { routes } from '../../utils/history';
+import DashboardStudyPage from '../DashboardStudyPage';
 
 export default function App() {
   return (
@@ -17,6 +18,15 @@ export default function App() {
           render={() => (
             <DashboardPage>
               <DashboardStudiesPage />
+            </DashboardPage>
+          )}
+        />
+        <Route
+          exact
+          path={routes.studySeries}
+          render={() => (
+            <DashboardPage>
+              <DashboardStudyPage />
             </DashboardPage>
           )}
         />

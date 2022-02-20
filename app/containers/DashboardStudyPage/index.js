@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { generatePath, useHistory } from 'react-router-dom';
 import { useInjectReducer } from '../../utils/injectReducer';
 import { useInjectSaga } from '../../utils/injectSaga';
 import reducer from './reducer';
@@ -12,36 +11,30 @@ import saga from './saga';
 import {
   makeSelectErrors,
   makeSelectLoading,
-  makeSelectStudies,
-  makeSelectStudiesTotalCount,
+  makeSelectSeries,
+  makeSelectSeriesTotalCount,
 } from './selectors';
-import { loadStudies, loadTotalStudiesCount } from './actions';
+import { loadSeries, loadTotalSeriesCount } from './actions';
 import Backdrop from '../../components/Backdrop';
 import ErrorAlert from '../../components/ErrorAlert';
 import ObjectsTable from '../../components/ObjectsTable';
 import Study from '../../utils/dicom/parser/study';
-import { routes } from '../../utils/history';
-import ObjectsManager from '../../utils/objectsManager';
 
-const key = 'dashboardStudies';
+const key = 'dashboardSeries';
 
-export function DashboardStudiesPage({
+export function DashboardStudyPage({
   loading,
   errors,
-  studies,
+  series,
   totalCountLoading,
-  dispatchLoadStudies,
-  dispatchLoadTotalStudiesCount,
+  dispatchLoadSeries,
+  dispatchLoadTotalSeriesCount,
 }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
-  const history = useHistory();
 
   const onStudyClick = studyUID => {
-    const path = generatePath(routes.studySeries, {
-      studyId: studyUID,
-    });
-    history.push(path);
+    console.log(studyUID);
   };
 
   return (
@@ -56,10 +49,10 @@ export function DashboardStudiesPage({
               <ObjectsTable
                 injectSaga={{ key, saga }}
                 objectType={Study}
-                objects={studies}
+                objects={series}
                 objectsCount={totalCountLoading}
-                dispatchLoadObjects={dispatchLoadStudies}
-                dispatchLoadTotalObjectsCount={dispatchLoadTotalStudiesCount}
+                dispatchLoadObjects={dispatchLoadSeries}
+                dispatchLoadTotalObjectsCount={dispatchLoadTotalSeriesCount}
                 onObjectClick={onStudyClick}
               />
             </Paper>
@@ -70,27 +63,27 @@ export function DashboardStudiesPage({
   );
 }
 
-DashboardStudiesPage.propTypes = {
+DashboardStudyPage.propTypes = {
   loading: PropTypes.bool.isRequired,
   errors: PropTypes.arrayOf(PropTypes.object).isRequired,
-  studies: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]).isRequired,
+  series: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]).isRequired,
   totalCountLoading: PropTypes.number.isRequired,
-  dispatchLoadStudies: PropTypes.func.isRequired,
-  dispatchLoadTotalStudiesCount: PropTypes.func.isRequired,
+  dispatchLoadSeries: PropTypes.func.isRequired,
+  dispatchLoadTotalSeriesCount: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  studies: makeSelectStudies(),
-  totalCountLoading: makeSelectStudiesTotalCount(),
+  series: makeSelectSeries(),
+  totalCountLoading: makeSelectSeriesTotalCount(),
   loading: makeSelectLoading(),
   errors: makeSelectErrors(),
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
-    dispatchLoadStudies: options => dispatch(loadStudies(options)),
-    dispatchLoadTotalStudiesCount: options =>
-      dispatch(loadTotalStudiesCount(options)),
+    dispatchLoadSeries: options => dispatch(loadSeries(options)),
+    dispatchLoadTotalSeriesCount: options =>
+      dispatch(loadTotalSeriesCount(options)),
   };
 }
 
@@ -102,4 +95,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(DashboardStudiesPage);
+)(DashboardStudyPage);

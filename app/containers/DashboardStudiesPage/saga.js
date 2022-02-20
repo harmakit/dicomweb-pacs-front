@@ -6,33 +6,27 @@ import {
   studiesLoadingError,
 } from './actions';
 import { LOAD_STUDIES, LOAD_STUDIES_TOTAL_COUNT } from './constants';
-import { studiesCall } from '../../utils/api';
+import ObjectsManager from '../../utils/objectsManager';
 import parser from '../../utils/dicom/parser';
 
 export function* getStudies({ options }) {
   try {
-    const studies = yield studiesCall(options);
+    const studies = yield ObjectsManager.searchStudies(options, true);
     if (!Array.isArray(studies)) {
       throw new Error('Wrong server response');
     }
-    const parsedStudies = studies.map(studyData =>
-      parser.parseStudy(studyData),
-    );
-    yield put(studiesLoaded(parsedStudies));
+    yield put(studiesLoaded(studies));
   } catch (err) {
     yield put(studiesLoadingError(err));
   }
 }
 export function* getStudiesCount({ options }) {
   try {
-    const studies = yield studiesCall(options);
+    const studies = yield ObjectsManager.searchStudies(options);
     if (!Array.isArray(studies)) {
       throw new Error('Wrong server response');
     }
-    const parsedStudies = studies.map(studyData =>
-      parser.parseStudy(studyData),
-    );
-    yield put(loadTotalStudiesCountLoaded(parsedStudies.length));
+    yield put(loadTotalStudiesCountLoaded(studies.length));
   } catch (err) {
     yield put(loadTotalStudiesCountError(err));
   }
