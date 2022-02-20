@@ -1,9 +1,3 @@
-/*
- *
- * LanguageProvider actions
- *
- */
-
 import {
   LOAD_STUDIES,
   LOAD_STUDIES_ERROR,
@@ -12,6 +6,7 @@ import {
   LOAD_STUDIES_TOTAL_COUNT_ERROR,
   LOAD_STUDIES_TOTAL_COUNT_SUCCESS,
 } from './constants';
+import { packError } from '../../utils/errors';
 
 export function loadStudies(options) {
   return {
@@ -30,7 +25,7 @@ export function studiesLoaded(studies) {
 export function studiesLoadingError(error) {
   return {
     type: LOAD_STUDIES_ERROR,
-    error,
+    error: packError(error),
   };
 }
 
@@ -51,6 +46,6 @@ export function loadTotalStudiesCountLoaded(count) {
 export function loadTotalStudiesCountError(error) {
   return {
     type: LOAD_STUDIES_TOTAL_COUNT_ERROR,
-    error,
+    error: packError(error),
   };
 }

@@ -41,7 +41,7 @@ export function DashboardStudiesPage({
     <div>
       <Backdrop loading={loading}>
         {errors.map(error => (
-          <ErrorAlert error={error} />
+          <ErrorAlert key={error.id} error={error} />
         ))}
         <Grid container spacing={3}>
           <Grid item xs={12}>

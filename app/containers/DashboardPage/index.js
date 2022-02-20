@@ -30,6 +30,7 @@ import reducer from './reducer';
 import { makeSelectIsDrawerOpen } from './selectors';
 import { closeDrawer, openDrawer } from './actions';
 import { routes } from '../../utils/history';
+import ImageViewer from '../../components/WADOImageViewer';
 
 const key = 'dashboard';
 

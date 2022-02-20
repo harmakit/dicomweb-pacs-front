@@ -1,18 +1,10 @@
 import React from 'react';
 import { Alert } from '@mui/material';
 import PropTypes from 'prop-types';
+import { PackedError } from '../../utils/errors';
 
 export default function ErrorAlert({ error }) {
-  if (error === false) {
-    return null;
-  }
-  let message = false;
-  if (typeof error === 'string') {
-    message = error;
-  } else if (error instanceof TypeError) {
-    // eslint-disable-next-line prefer-destructuring
-    message = error.message;
-  }
+  let { message } = error;
   if (!message) {
     message = 'Unknown error';
   }
@@ -24,10 +16,5 @@ export default function ErrorAlert({ error }) {
 }
 
 ErrorAlert.propTypes = {
-  error: PropTypes.oneOfType([
-    PropTypes.instanceOf(Error),
-    PropTypes.instanceOf(TypeError),
-    PropTypes.string,
-    PropTypes.bool,
-  ]).isRequired,
+  error: PropTypes.instanceOf(PackedError).isRequired,
 };
