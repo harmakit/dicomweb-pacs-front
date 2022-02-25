@@ -3,12 +3,13 @@ import { merge } from 'lodash';
 import parser from './dicom/parser';
 import Study from './dicom/parser/study';
 import Series from './dicom/parser/series';
+import Instance from './dicom/parser/instance';
 
 const BASE_URL = 'http://localhost:8042/dicom-web';
 const client = new DICOMwebClient({ url: BASE_URL });
 
 class ObjectsManager {
-  #cache = new Map([[Study, []], [Series, []]]);
+  #cache = new Map([[Study, []], [Series, []], [Instance, []]]);
 
   #cacheObjects(objects) {
     objects.forEach(object => {
@@ -39,63 +40,55 @@ class ObjectsManager {
     });
   }
 
-  getStudy(studyUID) {
-    const study = this.#cache
-      .get(Study)
-      .find(item => item[Study.getObjectIdField()] === studyUID);
-    if (study) {
-      return Promise.resolve(study);
+  getObjectById(objectType, objectId) {
+    const object = this.#cache
+      .get(objectType)
+      .find(item => item[objectType.getObjectIdField()] === objectId);
+    if (object) {
+      return Promise.resolve(object);
     }
-    const promise = client.searchForStudies({
+    const options = {
       queryParams: {
-        [Study.getFieldAttribute(Study.getObjectIdField())]: studyUID,
+        [objectType.getFieldAttribute(objectType.getObjectIdField())]: objectId,
       },
-    });
-    return promise.then(response => {
-      const parsedStudies = response.map(studyData =>
-        parser.parseStudy(studyData),
-      );
-      this.#cacheObjects(parsedStudies);
-      if (parsedStudies.length === 0) {
-        throw new Error();
+    };
+    const promise = this.searchObjects(objectType, options, true);
+    return promise.then(objects => {
+      if (objects.length === 0) {
+        return null;
       }
-      return parsedStudies[0];
+      return objects[0];
     });
   }
 
   /**
+   * @param objectType
    * @param {Object} options
    * @param cache
    * @param {Object} [options.queryParams]
    */
-  searchStudies(options = {}, cache = false) {
-    const promise = client.searchForStudies(options);
+  searchObjects(objectType, options = {}, cache = false) {
+    let searchMethod = null;
+    switch (objectType) {
+      case Study:
+        searchMethod = args => client.searchForStudies(args);
+        break;
+      case Series:
+        searchMethod = args => client.searchForSeries(args);
+        break;
+      case Instance:
+        searchMethod = args => client.searchForInstances(args);
+        break;
+      default:
+        throw new TypeError(`Wrong type "${objectType}"`);
+    }
+    const promise = searchMethod(options);
     return promise.then(response => {
-      const parsedStudies = response.map(studyData =>
-        parser.parseStudy(studyData),
-      );
+      const parsed = response.map(data => parser.parse(objectType, data));
       if (cache) {
-        this.#cacheObjects(parsedStudies);
+        this.#cacheObjects(parsed);
       }
-      return parsedStudies;
-    });
-  }
-
-  /**
-   * @param {Object} options
-   * @param cache
-   * @param {Object} [options.queryParams]
-   */
-  searchSeries(options = {}, cache = false) {
-    const promise = client.searchForSeries(options);
-    return promise.then(response => {
-      const parsedSeries = response.map(seriesData =>
-        parser.parseSeries(seriesData),
-      );
-      if (cache) {
-        this.#cacheObjects(parsedSeries);
-      }
-      return parsedSeries;
+      return parsed;
     });
   }
 }

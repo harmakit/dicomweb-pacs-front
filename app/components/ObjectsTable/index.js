@@ -34,6 +34,11 @@ import Series, {
   FIELD_SERIES_INSTANCE_UID,
   FIELD_SERIES_NUMBER,
 } from '../../utils/dicom/parser/series';
+import Instance, {
+  FIELD_INSTANCE_NUMBER,
+  FIELD_SOP_CLASS_UID,
+  FIELD_SOP_INSTANCE_UID,
+} from '../../utils/dicom/parser/instance';
 
 export const PAGINATION_DEFAULT_PAGE = 0;
 export const PAGINATION_ROWS_PER_PAGE_OPTIONS = [5, 10, 25, 100];
@@ -94,6 +99,20 @@ function getColumns(objectType) {
         {
           id: FIELD_REQUESTED_PROCEDURE_ID,
           label: 'Requested Procedure ID',
+          minWidth: '10%',
+        },
+      ];
+    case Instance:
+      return [
+        { id: FIELD_SOP_CLASS_UID, label: 'SOP Class UID', minWidth: '10%' },
+        {
+          id: FIELD_SOP_INSTANCE_UID,
+          label: 'SOP Instance UID',
+          minWidth: '10%',
+        },
+        {
+          id: FIELD_INSTANCE_NUMBER,
+          label: 'Instance Number',
           minWidth: '10%',
         },
       ];

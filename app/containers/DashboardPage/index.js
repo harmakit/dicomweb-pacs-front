@@ -83,7 +83,10 @@ function DashboardPage({
                 primary={<FormattedMessage {...messages.menu.home} />}
               />
             </ListItem>
-            <ListItem button onClick={() => onDrawerItemClick(routes.studies)}>
+            <ListItem
+              button
+              onClick={() => onDrawerItemClick(routes.studyList)}
+            >
               <ListItemIcon>
                 <ViewListIcon />
               </ListItemIcon>

@@ -21,10 +21,9 @@ import ErrorAlert from '../../components/ErrorAlert';
 import ObjectsTable from '../../components/ObjectsTable';
 import Study from '../../utils/dicom/parser/study';
 import { routes } from '../../utils/history';
+import { key } from './key';
 
-const key = 'dashboardStudies';
-
-export function DashboardStudiesPage({
+export function DashboardStudyListPage({
   loading,
   errors,
   studies,
@@ -37,7 +36,7 @@ export function DashboardStudiesPage({
   const history = useHistory();
 
   const onStudyClick = studyUID => {
-    const path = generatePath(routes.studySeries, {
+    const path = generatePath(routes.study, {
       studyId: studyUID,
     });
     history.push(path);
@@ -69,7 +68,7 @@ export function DashboardStudiesPage({
   );
 }
 
-DashboardStudiesPage.propTypes = {
+DashboardStudyListPage.propTypes = {
   loading: PropTypes.bool.isRequired,
   errors: PropTypes.arrayOf(PropTypes.object).isRequired,
   studies: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]).isRequired,
@@ -101,4 +100,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(DashboardStudiesPage);
+)(DashboardStudyListPage);

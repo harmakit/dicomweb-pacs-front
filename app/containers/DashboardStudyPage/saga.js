@@ -9,10 +9,13 @@ import {
 import { LOAD_SERIES, LOAD_SERIES_TOTAL_COUNT, LOAD_STUDY } from './constants';
 import ObjectsManager from '../../utils/objectsManager';
 import Study from '../../utils/dicom/parser/study';
+import Series from '../../utils/dicom/parser/series';
 
 export function* getStudy({ studyUID }) {
   try {
-    const study = yield call(() => ObjectsManager.getStudy(studyUID));
+    const study = yield call(() =>
+      ObjectsManager.getObjectById(Study, studyUID),
+    );
     if (!(study instanceof Study)) {
       throw new Error('Wrong study response');
     }
@@ -24,7 +27,9 @@ export function* getStudy({ studyUID }) {
 
 export function* getSeries({ options }) {
   try {
-    const series = yield call(() => ObjectsManager.searchSeries(options, true));
+    const series = yield call(() =>
+      ObjectsManager.searchObjects(Series, options, true),
+    );
     if (!Array.isArray(series)) {
       throw new Error('Wrong server response');
     }
@@ -36,7 +41,9 @@ export function* getSeries({ options }) {
 
 export function* getSeriesCount({ options }) {
   try {
-    const series = yield call(() => ObjectsManager.searchSeries(options));
+    const series = yield call(() =>
+      ObjectsManager.searchObjects(Series, options),
+    );
     if (!Array.isArray(series)) {
       throw new Error('Wrong server response');
     }

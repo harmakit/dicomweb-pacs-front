@@ -20,7 +20,7 @@ export const initialState = {
 };
 
 /* eslint-disable default-case, no-param-reassign */
-const dashboardStudiesReducer = (state = initialState, action) =>
+const dashboardStudyListReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
       case LOAD_STUDIES:
@@ -50,4 +50,4 @@ const dashboardStudiesReducer = (state = initialState, action) =>
     }
   });
 
-export default dashboardStudiesReducer;
+export default dashboardStudyListReducer;

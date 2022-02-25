@@ -7,11 +7,12 @@ import {
 } from './actions';
 import { LOAD_STUDIES, LOAD_STUDIES_TOTAL_COUNT } from './constants';
 import ObjectsManager from '../../utils/objectsManager';
+import Study from '../../utils/dicom/parser/study';
 
 export function* getStudies({ options }) {
   try {
     const studies = yield call(() =>
-      ObjectsManager.searchStudies(options, true),
+      ObjectsManager.searchObjects(Study, options, true),
     );
     if (!Array.isArray(studies)) {
       throw new Error('Wrong server response');
@@ -23,7 +24,9 @@ export function* getStudies({ options }) {
 }
 export function* getStudiesCount({ options }) {
   try {
-    const studies = yield call(() => ObjectsManager.searchStudies(options));
+    const studies = yield call(() =>
+      ObjectsManager.searchObjects(Study, options),
+    );
     if (!Array.isArray(studies)) {
       throw new Error('Wrong server response');
     }

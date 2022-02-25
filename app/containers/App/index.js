@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-
+import { routes } from '../../utils/history';
 import NotFoundPage from '../NotFoundPage/Loadable';
 import DashboardPage from '../DashboardPage/Loadable';
-import DashboardStudiesPage from '../DashboardStudiesPage/Loadable';
-import { routes } from '../../utils/history';
-import DashboardStudyPage from '../DashboardStudyPage';
+import DashboardStudyListPage from '../DashboardStudyListPage/Loadable';
+import DashboardStudyPage from '../DashboardStudyPage/Loadable';
+import DashboardSeriesPage from '../DashboardSeriesPage/Loadable';
 
 export default function App() {
   return (
@@ -14,19 +14,28 @@ export default function App() {
         <Route exact path={routes.home} component={DashboardPage} />
         <Route
           exact
-          path={routes.studies}
+          path={routes.studyList}
           render={() => (
             <DashboardPage>
-              <DashboardStudiesPage />
+              <DashboardStudyListPage />
             </DashboardPage>
           )}
         />
         <Route
           exact
-          path={routes.studySeries}
+          path={routes.study}
           render={() => (
             <DashboardPage>
               <DashboardStudyPage />
+            </DashboardPage>
+          )}
+        />
+        <Route
+          exact
+          path={routes.series}
+          render={() => (
+            <DashboardPage>
+              <DashboardSeriesPage />
             </DashboardPage>
           )}
         />

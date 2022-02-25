@@ -1,23 +1,24 @@
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
+import { key } from './key';
 
-const selectDashboardStudies = state => state.dashboardStudies || initialState;
+const selectDashboardStudyList = state => state[key] || initialState;
 
 const makeSelectLoading = () =>
   createSelector(
-    selectDashboardStudies,
+    selectDashboardStudyList,
     state => state.loading || state.totalCountLoading,
   );
 
 const makeSelectStudies = () =>
   createSelector(
-    selectDashboardStudies,
+    selectDashboardStudyList,
     state => state.studies,
   );
 
 const makeSelectErrors = () =>
   createSelector(
-    selectDashboardStudies,
+    selectDashboardStudyList,
     state => {
       const errors = [];
       if (state.error) {
@@ -32,12 +33,12 @@ const makeSelectErrors = () =>
 
 const makeSelectStudiesTotalCount = () =>
   createSelector(
-    selectDashboardStudies,
+    selectDashboardStudyList,
     state => state.studiesTotalCount,
   );
 
 export {
-  selectDashboardStudies,
+  selectDashboardStudyList,
   makeSelectStudiesTotalCount,
   makeSelectLoading,
   makeSelectStudies,

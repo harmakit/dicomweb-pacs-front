@@ -7,19 +7,19 @@ const selectDashboardSeries = state => state[key] || initialState;
 const makeSelectLoading = () =>
   createSelector(
     selectDashboardSeries,
-    state => state.loading || state.totalCountLoading || state.studyLoading,
-  );
-
-const makeSelectStudy = () =>
-  createSelector(
-    selectDashboardSeries,
-    state => state.study,
+    state => state.loading || state.totalCountLoading || state.seriesLoading,
   );
 
 const makeSelectSeries = () =>
   createSelector(
     selectDashboardSeries,
     state => state.series,
+  );
+
+const makeSelectInstances = () =>
+  createSelector(
+    selectDashboardSeries,
+    state => state.instances,
   );
 
 const makeSelectErrors = () =>
@@ -31,26 +31,26 @@ const makeSelectErrors = () =>
         errors.push(state.error);
       }
       if (state.seriesTotalError) {
-        errors.push(state.seriesTotalError);
+        errors.push(state.instancesTotalError);
       }
       if (state.studyLoadingError) {
-        errors.push(state.studyLoadingError);
+        errors.push(state.seriesLoadingError);
       }
       return errors;
     },
   );
 
-const makeSelectSeriesTotalCount = () =>
+const makeSelectInstancesTotalCount = () =>
   createSelector(
     selectDashboardSeries,
-    state => state.seriesTotalCount,
+    state => state.instancesTotalCount,
   );
 
 export {
   selectDashboardSeries,
-  makeSelectSeriesTotalCount,
+  makeSelectInstances,
+  makeSelectInstancesTotalCount,
   makeSelectLoading,
-  makeSelectSeries,
   makeSelectErrors,
-  makeSelectStudy,
+  makeSelectSeries,
 };
