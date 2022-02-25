@@ -5,8 +5,32 @@ import {
   LOAD_SERIES_TOTAL_COUNT,
   LOAD_SERIES_TOTAL_COUNT_ERROR,
   LOAD_SERIES_TOTAL_COUNT_SUCCESS,
+  LOAD_STUDY,
+  LOAD_STUDY_ERROR,
+  LOAD_STUDY_SUCCESS,
 } from './constants';
 import { packError } from '../../utils/errors';
+
+export function loadStudy(studyUID) {
+  return {
+    type: LOAD_STUDY,
+    studyUID,
+  };
+}
+
+export function studyLoaded(study) {
+  return {
+    type: LOAD_STUDY_SUCCESS,
+    study,
+  };
+}
+
+export function studyLoadingError(error) {
+  return {
+    type: LOAD_STUDY_ERROR,
+    error: packError(error),
+  };
+}
 
 export function loadSeries(options) {
   return {

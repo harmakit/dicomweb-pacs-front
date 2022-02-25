@@ -21,7 +21,6 @@ import ErrorAlert from '../../components/ErrorAlert';
 import ObjectsTable from '../../components/ObjectsTable';
 import Study from '../../utils/dicom/parser/study';
 import { routes } from '../../utils/history';
-import ObjectsManager from '../../utils/objectsManager';
 
 const key = 'dashboardStudies';
 
@@ -29,7 +28,7 @@ export function DashboardStudiesPage({
   loading,
   errors,
   studies,
-  totalCountLoading,
+  studiesCount,
   dispatchLoadStudies,
   dispatchLoadTotalStudiesCount,
 }) {
@@ -57,7 +56,7 @@ export function DashboardStudiesPage({
                 injectSaga={{ key, saga }}
                 objectType={Study}
                 objects={studies}
-                objectsCount={totalCountLoading}
+                objectsCount={studiesCount}
                 dispatchLoadObjects={dispatchLoadStudies}
                 dispatchLoadTotalObjectsCount={dispatchLoadTotalStudiesCount}
                 onObjectClick={onStudyClick}
@@ -74,14 +73,14 @@ DashboardStudiesPage.propTypes = {
   loading: PropTypes.bool.isRequired,
   errors: PropTypes.arrayOf(PropTypes.object).isRequired,
   studies: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]).isRequired,
-  totalCountLoading: PropTypes.number.isRequired,
+  studiesCount: PropTypes.number.isRequired,
   dispatchLoadStudies: PropTypes.func.isRequired,
   dispatchLoadTotalStudiesCount: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   studies: makeSelectStudies(),
-  totalCountLoading: makeSelectStudiesTotalCount(),
+  studiesCount: makeSelectStudiesTotalCount(),
   loading: makeSelectLoading(),
   errors: makeSelectErrors(),
 });

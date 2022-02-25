@@ -1,8 +1,18 @@
-class DicomObject {
+class DicomObjectAbstract {
   #raw;
 
   constructor(data) {
+    if (new.target === DicomObjectAbstract) {
+      throw new TypeError('Cannot construct Abstract instances directly');
+    }
     this.#raw = data;
+  }
+
+  /**
+   * @return string
+   */
+  static getObjectIdField() {
+    throw new Error('Should return field');
   }
 
   parseAttribute(attribute) {
@@ -51,4 +61,4 @@ class DicomObject {
   }
 }
 
-export default DicomObject;
+export default DicomObjectAbstract;

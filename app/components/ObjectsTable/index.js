@@ -9,7 +9,7 @@ import {
   TableRow,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import { noop } from 'lodash';
+import { merge, noop } from 'lodash';
 import Study, {
   FIELD_ACCESSION_NUMBER,
   FIELD_MODALITIES_IN_STUDY,
@@ -21,9 +21,19 @@ import Study, {
   FIELD_STUDY_INSTANCE_UID,
   FIELD_STUDY_TIME,
 } from '../../utils/dicom/parser/study';
-import DicomObject from '../../utils/dicom/parser/object';
+import DicomObjectAbstract from '../../utils/dicom/parser/object';
 import { useInjectSaga } from '../../utils/injectSaga';
 import { allowedModes } from '../../utils/sagaInjectors';
+import Series, {
+  FIELD_MODALITY,
+  FIELD_PERFORMED_PROCEDURE_STEP_START_DATE,
+  FIELD_PERFORMED_PROCEDURE_STEP_START_TIME,
+  FIELD_REQUEST_ATTRIBUTES_SEQUENCE,
+  FIELD_REQUESTED_PROCEDURE_ID,
+  FIELD_SCHEDULED_PROCEDURE_STEP_ID,
+  FIELD_SERIES_INSTANCE_UID,
+  FIELD_SERIES_NUMBER,
+} from '../../utils/dicom/parser/series';
 
 export const PAGINATION_DEFAULT_PAGE = 0;
 export const PAGINATION_ROWS_PER_PAGE_OPTIONS = [5, 10, 25, 100];
@@ -52,27 +62,43 @@ function getColumns(objectType) {
         { id: FIELD_STUDY_INSTANCE_UID, label: 'Study UID', minWidth: '15%' },
         { id: FIELD_STUDY_ID, label: 'Study ID', minWidth: '10%' },
       ];
+    case Series:
+      return [
+        { id: FIELD_MODALITY, label: 'Modality', minWidth: '10%' },
+        {
+          id: FIELD_SERIES_INSTANCE_UID,
+          label: 'Series Instance UID',
+          minWidth: '15%',
+        },
+        { id: FIELD_SERIES_NUMBER, label: 'Series Number', minWidth: '10%' },
+        {
+          id: FIELD_PERFORMED_PROCEDURE_STEP_START_DATE,
+          label: 'Performed Procedure Step Start Date',
+          minWidth: '10%',
+        },
+        {
+          id: FIELD_PERFORMED_PROCEDURE_STEP_START_TIME,
+          label: 'Performed Procedure Step Start Time',
+          minWidth: '10%',
+        },
+        {
+          id: FIELD_REQUEST_ATTRIBUTES_SEQUENCE,
+          label: 'Request Attributes Sequence',
+          minWidth: '10%',
+        },
+        {
+          id: FIELD_SCHEDULED_PROCEDURE_STEP_ID,
+          label: 'Scheduled Procedure Step ID',
+          minWidth: '10%',
+        },
+        {
+          id: FIELD_REQUESTED_PROCEDURE_ID,
+          label: 'Requested Procedure ID',
+          minWidth: '10%',
+        },
+      ];
     default:
       return [];
-  }
-}
-
-function getObjectIdField(objectType) {
-  switch (objectType) {
-    case Study:
-      return FIELD_STUDY_INSTANCE_UID;
-    default:
-      console.warn('Unable to identify key field! Have to use array index.');
-      return null;
-  }
-}
-
-function getObjectFieldAttribute(objectType, field) {
-  switch (objectType) {
-    case Study:
-      return Study.getFieldAttribute(field);
-    default:
-      throw new Error('Unknown object!');
   }
 }
 
@@ -84,11 +110,11 @@ export default function ObjectsTable({
   objectsCount,
   onObjectClick,
   dispatchLoadObjects,
+  dispatchLoadObjectsInitialPayload,
   dispatchLoadTotalObjectsCount,
   injectSaga,
 }) {
   useInjectSaga(injectSaga);
-  const [initialized, setInitialized] = useState(false);
   const [page, setPage] = useState(PAGINATION_DEFAULT_PAGE);
   const [rowsPerPage, setRowsPerPage] = useState(
     PAGINATION_DEFAULT_ROWS_PER_PAGE,
@@ -96,15 +122,12 @@ export default function ObjectsTable({
   const rows = objects;
 
   useEffect(() => {
-    if (!initialized) {
-      loadObjects(buildPaginationData());
-      loadObjectsTotalCount();
-      setInitialized(true);
-    }
-  });
+    loadObjects(buildPaginationData());
+    loadObjectsTotalCount();
+  }, []);
 
   const columns = getColumns(objectType);
-  const rowKeyField = getObjectIdField(objectType);
+  const rowKeyField = objectType.getObjectIdField();
 
   const buildPaginationData = (
     pageValue = page,
@@ -115,6 +138,9 @@ export default function ObjectsTable({
   });
 
   const objectsCallPayload = { queryParams: {} };
+  if (dispatchLoadObjectsInitialPayload) {
+    merge(objectsCallPayload, dispatchLoadObjectsInitialPayload);
+  }
 
   const loadObjects = (paginationData = buildPaginationData()) => {
     const options = { ...objectsCallPayload };
@@ -130,7 +156,7 @@ export default function ObjectsTable({
     const options = { ...objectsCallPayload };
     options.queryParams = {
       ...options.queryParams,
-      includefield: getObjectFieldAttribute(objectType, rowKeyField),
+      includefield: objectType.getFieldAttribute(rowKeyField),
     };
     dispatchLoadTotalObjectsCount(options);
   };
@@ -208,10 +234,12 @@ export default function ObjectsTable({
 
 ObjectsTable.propTypes = {
   objectType: PropTypes.func.isRequired,
-  objects: PropTypes.arrayOf(PropTypes.instanceOf(DicomObject)).isRequired,
+  objects: PropTypes.arrayOf(PropTypes.instanceOf(DicomObjectAbstract))
+    .isRequired,
   objectsCount: PropTypes.number.isRequired,
   onObjectClick: PropTypes.func.isRequired,
   dispatchLoadObjects: PropTypes.func.isRequired,
+  dispatchLoadObjectsInitialPayload: PropTypes.object,
   dispatchLoadTotalObjectsCount: PropTypes.func.isRequired,
   injectSaga: PropTypes.shape({
     key: PropTypes.string.isRequired,

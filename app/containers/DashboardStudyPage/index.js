@@ -1,9 +1,10 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { Grid, Paper } from '@mui/material';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { useParams } from 'react-router-dom';
 import { useInjectReducer } from '../../utils/injectReducer';
 import { useInjectSaga } from '../../utils/injectSaga';
 import reducer from './reducer';
@@ -13,29 +14,50 @@ import {
   makeSelectLoading,
   makeSelectSeries,
   makeSelectSeriesTotalCount,
+  makeSelectStudy,
 } from './selectors';
-import { loadSeries, loadTotalSeriesCount } from './actions';
+import { loadSeries, loadStudy, loadTotalSeriesCount } from './actions';
 import Backdrop from '../../components/Backdrop';
 import ErrorAlert from '../../components/ErrorAlert';
 import ObjectsTable from '../../components/ObjectsTable';
-import Study from '../../utils/dicom/parser/study';
+import Study, {
+  FIELD_STUDY_INSTANCE_UID,
+} from '../../utils/dicom/parser/study';
+import Series from '../../utils/dicom/parser/series';
 
 const key = 'dashboardSeries';
 
 export function DashboardStudyPage({
+  study,
   loading,
   errors,
   series,
-  totalCountLoading,
+  seriesCount,
+  dispatchLoadStudy,
   dispatchLoadSeries,
   dispatchLoadTotalSeriesCount,
 }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
-  const onStudyClick = studyUID => {
-    console.log(studyUID);
+  const onSeriesClick = seriesUID => {
+    console.log(seriesUID);
   };
+
+  const { studyId } = useParams();
+
+  useEffect(() => {
+    console.log('loading study in PAGE');
+    dispatchLoadStudy(studyId);
+  }, []);
+
+  const loadSeriesPayload = { queryParams: {} };
+
+  if (study) {
+    loadSeriesPayload.queryParams[
+      Study.getFieldAttribute(FIELD_STUDY_INSTANCE_UID)
+    ] = study[FIELD_STUDY_INSTANCE_UID];
+  }
 
   return (
     <div>
@@ -46,15 +68,18 @@ export function DashboardStudyPage({
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Paper sx={{ mt: 2 }}>
-              <ObjectsTable
-                injectSaga={{ key, saga }}
-                objectType={Study}
-                objects={series}
-                objectsCount={totalCountLoading}
-                dispatchLoadObjects={dispatchLoadSeries}
-                dispatchLoadTotalObjectsCount={dispatchLoadTotalSeriesCount}
-                onObjectClick={onStudyClick}
-              />
+              {study && (
+                <ObjectsTable
+                  injectSaga={{ key, saga }}
+                  objectType={Series}
+                  objects={series}
+                  objectsCount={seriesCount}
+                  dispatchLoadObjects={dispatchLoadSeries}
+                  dispatchLoadObjectsInitialPayload={loadSeriesPayload}
+                  dispatchLoadTotalObjectsCount={dispatchLoadTotalSeriesCount}
+                  onObjectClick={onSeriesClick}
+                />
+              )}
             </Paper>
           </Grid>
         </Grid>
@@ -64,23 +89,27 @@ export function DashboardStudyPage({
 }
 
 DashboardStudyPage.propTypes = {
+  study: PropTypes.instanceOf(Study),
   loading: PropTypes.bool.isRequired,
   errors: PropTypes.arrayOf(PropTypes.object).isRequired,
   series: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]).isRequired,
-  totalCountLoading: PropTypes.number.isRequired,
+  seriesCount: PropTypes.number.isRequired,
+  dispatchLoadStudy: PropTypes.func.isRequired,
   dispatchLoadSeries: PropTypes.func.isRequired,
   dispatchLoadTotalSeriesCount: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
+  study: makeSelectStudy(),
   series: makeSelectSeries(),
-  totalCountLoading: makeSelectSeriesTotalCount(),
+  seriesCount: makeSelectSeriesTotalCount(),
   loading: makeSelectLoading(),
   errors: makeSelectErrors(),
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
+    dispatchLoadStudy: studyUID => dispatch(loadStudy(studyUID)),
     dispatchLoadSeries: options => dispatch(loadSeries(options)),
     dispatchLoadTotalSeriesCount: options =>
       dispatch(loadTotalSeriesCount(options)),

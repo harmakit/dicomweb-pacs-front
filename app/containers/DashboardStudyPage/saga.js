@@ -1,40 +1,53 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest, call } from 'redux-saga/effects';
 import {
   loadTotalSeriesCountError,
   loadTotalSeriesCountLoaded,
   seriesLoaded,
   seriesLoadingError,
+  studyLoaded,
 } from './actions';
-import { LOAD_SERIES, LOAD_SERIES_TOTAL_COUNT } from './constants';
+import { LOAD_SERIES, LOAD_SERIES_TOTAL_COUNT, LOAD_STUDY } from './constants';
 import ObjectsManager from '../../utils/objectsManager';
-import parser from '../../utils/dicom/parser';
+import Study from '../../utils/dicom/parser/study';
 
-export function* getSeries({ options }) {
+export function* getStudy({ studyUID }) {
   try {
-    const series = yield ObjectsManager.searchSeries(options, true);
-    if (!Array.isArray(series)) {
-      throw new Error('Wrong server response');
+    const study = yield call(() => ObjectsManager.getStudy(studyUID));
+    if (!(study instanceof Study)) {
+      throw new Error('Wrong study response');
     }
-    const parsedSeries = series.map(studyData => parser.parseStudy(studyData));
-    yield put(seriesLoaded(parsedSeries));
+    yield put(studyLoaded(study));
   } catch (err) {
     yield put(seriesLoadingError(err));
   }
 }
-export function* getSeriesCount({ options }) {
+
+export function* getSeries({ options }) {
   try {
-    const series = yield ObjectsManager.searchSeries(options);
+    const series = yield call(() => ObjectsManager.searchSeries(options, true));
     if (!Array.isArray(series)) {
       throw new Error('Wrong server response');
     }
-    const parsedSeries = series.map(studyData => parser.parseStudy(studyData));
-    yield put(loadTotalSeriesCountLoaded(parsedSeries.length));
+    yield put(seriesLoaded(series));
+  } catch (err) {
+    yield put(seriesLoadingError(err));
+  }
+}
+
+export function* getSeriesCount({ options }) {
+  try {
+    const series = yield call(() => ObjectsManager.searchSeries(options));
+    if (!Array.isArray(series)) {
+      throw new Error('Wrong server response');
+    }
+    yield put(loadTotalSeriesCountLoaded(series.length));
   } catch (err) {
     yield put(loadTotalSeriesCountError(err));
   }
 }
 
 export default function* data() {
+  yield takeLatest(LOAD_STUDY, getStudy);
   yield takeLatest(LOAD_SERIES, getSeries);
   yield takeLatest(LOAD_SERIES_TOTAL_COUNT, getSeriesCount);
 }

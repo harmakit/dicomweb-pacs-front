@@ -6,15 +6,21 @@ import {
   LOAD_SERIES_TOTAL_COUNT,
   LOAD_SERIES_TOTAL_COUNT_ERROR,
   LOAD_SERIES_TOTAL_COUNT_SUCCESS,
+  LOAD_STUDY,
+  LOAD_STUDY_ERROR,
+  LOAD_STUDY_SUCCESS,
 } from './constants';
 
 export const initialState = {
+  studyLoading: false,
   loading: false,
   totalCountLoading: false,
 
+  studyLoadingError: false,
   error: false,
   seriesTotalError: false,
 
+  study: null,
   series: [],
   seriesTotalCount: 0,
 };
@@ -23,6 +29,18 @@ export const initialState = {
 const dashboardSeriesReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
+      case LOAD_STUDY:
+        draft.studyLoading = true;
+        draft.studyLoadingError = false;
+        break;
+      case LOAD_STUDY_SUCCESS:
+        draft.studyLoading = false;
+        draft.study = action.study;
+        break;
+      case LOAD_STUDY_ERROR:
+        draft.studyLoading = false;
+        draft.studyLoadingError = action.error;
+        break;
       case LOAD_SERIES:
         draft.loading = true;
         draft.error = false;

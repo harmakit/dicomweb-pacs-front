@@ -6,7 +6,13 @@ const selectDashboardSeries = state => state.dashboardSeries || initialState;
 const makeSelectLoading = () =>
   createSelector(
     selectDashboardSeries,
-    state => state.loading || state.totalCountLoading,
+    state => state.loading || state.totalCountLoading || state.studyLoading,
+  );
+
+const makeSelectStudy = () =>
+  createSelector(
+    selectDashboardSeries,
+    state => state.study,
   );
 
 const makeSelectSeries = () =>
@@ -26,6 +32,9 @@ const makeSelectErrors = () =>
       if (state.seriesTotalError) {
         errors.push(state.seriesTotalError);
       }
+      if (state.studyLoadingError) {
+        errors.push(state.studyLoadingError);
+      }
       return errors;
     },
   );
@@ -42,4 +51,5 @@ export {
   makeSelectLoading,
   makeSelectSeries,
   makeSelectErrors,
+  makeSelectStudy,
 };
