@@ -14,9 +14,9 @@ import {
   makeSelectLoading,
   makeSelectSeries,
   makeSelectSeriesTotalCount,
-  makeSelectStudy,
+  makeSelectStudyObject,
 } from './selectors';
-import { loadSeries, loadStudy, loadTotalSeriesCount } from './actions';
+import { loadSeries, loadStudyObject, loadTotalSeriesCount } from './actions';
 import Backdrop from '../../components/Backdrop';
 import ErrorAlert from '../../components/ErrorAlert';
 import ObjectsTable from '../../components/ObjectsTable';
@@ -28,12 +28,12 @@ import { routes } from '../../utils/history';
 import { key } from './key';
 
 export function DashboardStudyPage({
-  study,
+  studyObject,
   loading,
   errors,
   series,
   seriesCount,
-  dispatchLoadStudy,
+  dispatchLoadStudyObject,
   dispatchLoadSeries,
   dispatchLoadTotalSeriesCount,
 }) {
@@ -51,15 +51,15 @@ export function DashboardStudyPage({
   };
 
   useEffect(() => {
-    dispatchLoadStudy(studyId);
+    dispatchLoadStudyObject(studyId);
   }, []);
 
   const loadSeriesPayload = { queryParams: {} };
 
-  if (study) {
+  if (studyObject) {
     loadSeriesPayload.queryParams[
       Study.getFieldAttribute(FIELD_STUDY_INSTANCE_UID)
-    ] = study[FIELD_STUDY_INSTANCE_UID];
+    ] = studyObject[FIELD_STUDY_INSTANCE_UID];
   }
 
   return (
@@ -71,7 +71,7 @@ export function DashboardStudyPage({
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Paper sx={{ mt: 2 }}>
-              {study && (
+              {studyObject && (
                 <ObjectsTable
                   injectSaga={{ key, saga }}
                   objectType={Series}
@@ -92,18 +92,18 @@ export function DashboardStudyPage({
 }
 
 DashboardStudyPage.propTypes = {
-  study: PropTypes.instanceOf(Study),
+  studyObject: PropTypes.instanceOf(Study),
   loading: PropTypes.bool.isRequired,
   errors: PropTypes.arrayOf(PropTypes.object).isRequired,
   series: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]).isRequired,
   seriesCount: PropTypes.number.isRequired,
-  dispatchLoadStudy: PropTypes.func.isRequired,
+  dispatchLoadStudyObject: PropTypes.func.isRequired,
   dispatchLoadSeries: PropTypes.func.isRequired,
   dispatchLoadTotalSeriesCount: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  study: makeSelectStudy(),
+  studyObject: makeSelectStudyObject(),
   series: makeSelectSeries(),
   seriesCount: makeSelectSeriesTotalCount(),
   loading: makeSelectLoading(),
@@ -112,7 +112,7 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    dispatchLoadStudy: studyUID => dispatch(loadStudy(studyUID)),
+    dispatchLoadStudyObject: studyUID => dispatch(loadStudyObject(studyUID)),
     dispatchLoadSeries: options => dispatch(loadSeries(options)),
     dispatchLoadTotalSeriesCount: options =>
       dispatch(loadTotalSeriesCount(options)),

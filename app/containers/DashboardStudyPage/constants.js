@@ -1,6 +1,8 @@
-export const LOAD_STUDY = 'app/DashboardSeriesPage/LOAD_STUDY';
-export const LOAD_STUDY_SUCCESS = 'app/DashboardSeriesPage/LOAD_STUDY_SUCCESS';
-export const LOAD_STUDY_ERROR = 'app/DashboardSeriesPage/LOAD_STUDY_ERROR';
+export const LOAD_STUDY_OBJECT = 'app/DashboardSeriesPage/LOAD_STUDY_OBJECT';
+export const LOAD_STUDY_OBJECT_SUCCESS =
+  'app/DashboardSeriesPage/LOAD_STUDY_OBJECT_SUCCESS';
+export const LOAD_STUDY_OBJECT_ERROR =
+  'app/DashboardSeriesPage/LOAD_STUDY_OBJECT_ERROR';
 
 export const LOAD_SERIES = 'app/DashboardSeriesPage/LOAD_SERIES';
 export const LOAD_SERIES_SUCCESS =

@@ -4,19 +4,19 @@ import {
   instancesLoadingError,
   loadTotalInstancesCountError,
   loadTotalInstancesCountLoaded,
-  seriesLoaded,
-  seriesLoadingError,
+  seriesObjectLoaded,
+  seriesObjectLoadingError,
 } from './actions';
 import {
   LOAD_INSTANCES,
   LOAD_INSTANCES_TOTAL_COUNT,
-  LOAD_SERIES,
+  LOAD_SERIES_OBJECT,
 } from './constants';
 import ObjectsManager from '../../utils/objectsManager';
 import Series from '../../utils/dicom/parser/series';
 import Instance from '../../utils/dicom/parser/instance';
 
-export function* getSeries({ seriesUID }) {
+export function* getSeriesObject({ seriesUID }) {
   try {
     const series = yield call(() =>
       ObjectsManager.getObjectById(Series, seriesUID),
@@ -24,9 +24,9 @@ export function* getSeries({ seriesUID }) {
     if (!(series instanceof Series)) {
       throw new Error('Wrong series response');
     }
-    yield put(seriesLoaded(series));
+    yield put(seriesObjectLoaded(series));
   } catch (err) {
-    yield put(seriesLoadingError(err));
+    yield put(seriesObjectLoadingError(err));
   }
 }
 
@@ -59,7 +59,7 @@ export function* getInstancesCount({ options }) {
 }
 
 export default function* data() {
-  yield takeLatest(LOAD_SERIES, getSeries);
+  yield takeLatest(LOAD_SERIES_OBJECT, getSeriesObject);
   yield takeLatest(LOAD_INSTANCES, getInstances);
   yield takeLatest(LOAD_INSTANCES_TOTAL_COUNT, getInstancesCount);
 }

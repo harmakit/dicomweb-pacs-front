@@ -5,29 +5,29 @@ import {
   LOAD_INSTANCES_TOTAL_COUNT,
   LOAD_INSTANCES_TOTAL_COUNT_ERROR,
   LOAD_INSTANCES_TOTAL_COUNT_SUCCESS,
-  LOAD_SERIES,
-  LOAD_SERIES_ERROR,
-  LOAD_SERIES_SUCCESS,
+  LOAD_SERIES_OBJECT,
+  LOAD_SERIES_OBJECT_ERROR,
+  LOAD_SERIES_OBJECT_SUCCESS,
 } from './constants';
 import { packError } from '../../utils/errors';
 
-export function loadSeries(seriesUID) {
+export function loadSeriesObject(seriesUID) {
   return {
-    type: LOAD_SERIES,
+    type: LOAD_SERIES_OBJECT,
     seriesUID,
   };
 }
 
-export function seriesLoaded(series) {
+export function seriesObjectLoaded(series) {
   return {
-    type: LOAD_SERIES_SUCCESS,
+    type: LOAD_SERIES_OBJECT_SUCCESS,
     series,
   };
 }
 
-export function seriesLoadingError(error) {
+export function seriesObjectLoadingError(error) {
   return {
-    type: LOAD_SERIES_ERROR,
+    type: LOAD_SERIES_OBJECT_ERROR,
     error: packError(error),
   };
 }

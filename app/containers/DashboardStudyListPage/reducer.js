@@ -9,11 +9,11 @@ import {
 } from './constants';
 
 export const initialState = {
-  loading: false,
-  totalCountLoading: false,
+  studiesLoading: false,
+  studiesTotalCountLoading: false,
 
-  error: false,
-  studiesTotalError: false,
+  studiesLoadingError: false,
+  studiesTotalCountError: false,
 
   studies: [],
   studiesTotalCount: 0,
@@ -24,28 +24,28 @@ const dashboardStudyListReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
       case LOAD_STUDIES:
-        draft.loading = true;
-        draft.error = false;
+        draft.studiesLoading = true;
+        draft.studiesLoadingError = false;
         break;
       case LOAD_STUDIES_SUCCESS:
         draft.studies = action.studies;
-        draft.loading = false;
+        draft.studiesLoading = false;
         break;
       case LOAD_STUDIES_ERROR:
-        draft.error = action.error;
-        draft.loading = false;
+        draft.studiesLoadingError = action.error;
+        draft.studiesLoading = false;
         break;
       case LOAD_STUDIES_TOTAL_COUNT:
-        draft.totalCountLoading = true;
-        draft.studiesTotalError = false;
+        draft.studiesTotalCountLoading = true;
+        draft.studiesTotalCountError = false;
         break;
       case LOAD_STUDIES_TOTAL_COUNT_SUCCESS:
         draft.studiesTotalCount = action.count;
-        draft.totalCountLoading = false;
+        draft.studiesTotalCountLoading = false;
         break;
       case LOAD_STUDIES_TOTAL_COUNT_ERROR:
-        draft.studiesTotalError = action.error;
-        draft.totalCountLoading = false;
+        draft.studiesTotalCountError = action.error;
+        draft.studiesTotalCountLoading = false;
         break;
     }
   });

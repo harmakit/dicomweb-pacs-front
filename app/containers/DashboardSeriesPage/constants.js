@@ -1,7 +1,8 @@
-export const LOAD_SERIES = 'app/DashboardSeriesPage/LOAD_SERIES';
-export const LOAD_SERIES_SUCCESS =
-  'app/DashboardSeriesPage/LOAD_SERIES_SUCCESS';
-export const LOAD_SERIES_ERROR = 'app/DashboardSeriesPage/LOAD_SERIES_ERROR';
+export const LOAD_SERIES_OBJECT = 'app/DashboardSeriesPage/LOAD_SERIES_OBJECT';
+export const LOAD_SERIES_OBJECT_SUCCESS =
+  'app/DashboardSeriesPage/LOAD_SERIES_OBJECT_SUCCESS';
+export const LOAD_SERIES_OBJECT_ERROR =
+  'app/DashboardSeriesPage/LOAD_SERIES_OBJECT_ERROR';
 
 export const LOAD_INSTANCES = 'app/DashboardSeriesPage/LOAD_INSTANCES';
 export const LOAD_INSTANCES_SUCCESS =

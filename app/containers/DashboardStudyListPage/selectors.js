@@ -7,7 +7,7 @@ const selectDashboardStudyList = state => state[key] || initialState;
 const makeSelectLoading = () =>
   createSelector(
     selectDashboardStudyList,
-    state => state.loading || state.totalCountLoading,
+    state => state.studiesLoading || state.studiesTotalCountLoading,
   );
 
 const makeSelectStudies = () =>
@@ -21,11 +21,11 @@ const makeSelectErrors = () =>
     selectDashboardStudyList,
     state => {
       const errors = [];
-      if (state.error) {
-        errors.push(state.error);
+      if (state.studiesLoadingError) {
+        errors.push(state.studiesLoadingError);
       }
-      if (state.studiesTotalError) {
-        errors.push(state.studiesTotalError);
+      if (state.studiesTotalCountError) {
+        errors.push(state.studiesTotalCountError);
       }
       return errors;
     },

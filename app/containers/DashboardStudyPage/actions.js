@@ -5,29 +5,29 @@ import {
   LOAD_SERIES_TOTAL_COUNT,
   LOAD_SERIES_TOTAL_COUNT_ERROR,
   LOAD_SERIES_TOTAL_COUNT_SUCCESS,
-  LOAD_STUDY,
-  LOAD_STUDY_ERROR,
-  LOAD_STUDY_SUCCESS,
+  LOAD_STUDY_OBJECT,
+  LOAD_STUDY_OBJECT_ERROR,
+  LOAD_STUDY_OBJECT_SUCCESS,
 } from './constants';
 import { packError } from '../../utils/errors';
 
-export function loadStudy(studyUID) {
+export function loadStudyObject(studyUID) {
   return {
-    type: LOAD_STUDY,
+    type: LOAD_STUDY_OBJECT,
     studyUID,
   };
 }
 
-export function studyLoaded(study) {
+export function studyObjectLoaded(study) {
   return {
-    type: LOAD_STUDY_SUCCESS,
+    type: LOAD_STUDY_OBJECT_SUCCESS,
     study,
   };
 }
 
-export function studyLoadingError(error) {
+export function studyObjectLoadingError(error) {
   return {
-    type: LOAD_STUDY_ERROR,
+    type: LOAD_STUDY_OBJECT_ERROR,
     error: packError(error),
   };
 }

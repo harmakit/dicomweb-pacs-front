@@ -4,14 +4,18 @@ import {
   loadTotalSeriesCountLoaded,
   seriesLoaded,
   seriesLoadingError,
-  studyLoaded,
+  studyObjectLoaded,
 } from './actions';
-import { LOAD_SERIES, LOAD_SERIES_TOTAL_COUNT, LOAD_STUDY } from './constants';
+import {
+  LOAD_SERIES,
+  LOAD_SERIES_TOTAL_COUNT,
+  LOAD_STUDY_OBJECT,
+} from './constants';
 import ObjectsManager from '../../utils/objectsManager';
 import Study from '../../utils/dicom/parser/study';
 import Series from '../../utils/dicom/parser/series';
 
-export function* getStudy({ studyUID }) {
+export function* getStudyObject({ studyUID }) {
   try {
     const study = yield call(() =>
       ObjectsManager.getObjectById(Study, studyUID),
@@ -19,7 +23,7 @@ export function* getStudy({ studyUID }) {
     if (!(study instanceof Study)) {
       throw new Error('Wrong study response');
     }
-    yield put(studyLoaded(study));
+    yield put(studyObjectLoaded(study));
   } catch (err) {
     yield put(seriesLoadingError(err));
   }
@@ -54,7 +58,7 @@ export function* getSeriesCount({ options }) {
 }
 
 export default function* data() {
-  yield takeLatest(LOAD_STUDY, getStudy);
+  yield takeLatest(LOAD_STUDY_OBJECT, getStudyObject);
   yield takeLatest(LOAD_SERIES, getSeries);
   yield takeLatest(LOAD_SERIES_TOTAL_COUNT, getSeriesCount);
 }

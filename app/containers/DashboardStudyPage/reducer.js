@@ -6,21 +6,21 @@ import {
   LOAD_SERIES_TOTAL_COUNT,
   LOAD_SERIES_TOTAL_COUNT_ERROR,
   LOAD_SERIES_TOTAL_COUNT_SUCCESS,
-  LOAD_STUDY,
-  LOAD_STUDY_ERROR,
-  LOAD_STUDY_SUCCESS,
+  LOAD_STUDY_OBJECT,
+  LOAD_STUDY_OBJECT_ERROR,
+  LOAD_STUDY_OBJECT_SUCCESS,
 } from './constants';
 
 export const initialState = {
-  studyLoading: false,
-  loading: false,
-  totalCountLoading: false,
+  studyObjectLoading: false,
+  seriesLoading: false,
+  seriesTotalCountLoading: false,
 
-  studyLoadingError: false,
-  error: false,
-  seriesTotalError: false,
+  studyObjectLoadingError: false,
+  seriesLoadingError: false,
+  seriesTotalCountError: false,
 
-  study: null,
+  studyObject: null,
   series: [],
   seriesTotalCount: 0,
 };
@@ -29,41 +29,41 @@ export const initialState = {
 const dashboardSeriesReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
-      case LOAD_STUDY:
-        draft.studyLoading = true;
-        draft.studyLoadingError = false;
+      case LOAD_STUDY_OBJECT:
+        draft.studyObjectLoading = true;
+        draft.studyObjectLoadingError = false;
         break;
-      case LOAD_STUDY_SUCCESS:
-        draft.studyLoading = false;
-        draft.study = action.study;
+      case LOAD_STUDY_OBJECT_SUCCESS:
+        draft.studyObjectLoading = false;
+        draft.studyObject = action.study;
         break;
-      case LOAD_STUDY_ERROR:
-        draft.studyLoading = false;
-        draft.studyLoadingError = action.error;
+      case LOAD_STUDY_OBJECT_ERROR:
+        draft.studyObjectLoading = false;
+        draft.studyObjectLoadingError = action.error;
         break;
       case LOAD_SERIES:
-        draft.loading = true;
-        draft.error = false;
+        draft.seriesLoading = true;
+        draft.seriesLoadingError = false;
         break;
       case LOAD_SERIES_SUCCESS:
         draft.series = action.series;
-        draft.loading = false;
+        draft.seriesLoading = false;
         break;
       case LOAD_SERIES_ERROR:
-        draft.error = action.error;
-        draft.loading = false;
+        draft.seriesLoadingError = action.error;
+        draft.seriesLoading = false;
         break;
       case LOAD_SERIES_TOTAL_COUNT:
-        draft.totalCountLoading = true;
-        draft.seriesTotalError = false;
+        draft.seriesTotalCountLoading = true;
+        draft.seriesTotalCountError = false;
         break;
       case LOAD_SERIES_TOTAL_COUNT_SUCCESS:
         draft.seriesTotalCount = action.count;
-        draft.totalCountLoading = false;
+        draft.seriesTotalCountLoading = false;
         break;
       case LOAD_SERIES_TOTAL_COUNT_ERROR:
-        draft.seriesTotalError = action.error;
-        draft.totalCountLoading = false;
+        draft.seriesTotalCountError = action.error;
+        draft.seriesTotalCountLoading = false;
         break;
     }
   });

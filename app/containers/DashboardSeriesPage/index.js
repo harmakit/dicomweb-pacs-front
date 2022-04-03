@@ -14,9 +14,13 @@ import {
   makeSelectInstances,
   makeSelectInstancesTotalCount,
   makeSelectLoading,
-  makeSelectSeries,
+  makeSelectSeriesObject,
 } from './selectors';
-import { loadInstances, loadSeries, loadTotalInstancesCount } from './actions';
+import {
+  loadInstances,
+  loadSeriesObject,
+  loadTotalInstancesCount,
+} from './actions';
 import Backdrop from '../../components/Backdrop';
 import ErrorAlert from '../../components/ErrorAlert';
 import ObjectsTable from '../../components/ObjectsTable';
@@ -25,17 +29,14 @@ import Series, {
 } from '../../utils/dicom/parser/series';
 import Instance from '../../utils/dicom/parser/instance';
 import { key } from './key';
-import Study, {
-  FIELD_STUDY_INSTANCE_UID,
-} from '../../utils/dicom/parser/study';
 
 export function DashboardSeriesPage({
-  series,
+  seriesObject,
   loading,
   errors,
   instances,
   instancesCount,
-  dispatchLoadSeries,
+  dispatchLoadSeriesObject,
   dispatchLoadInstances,
   dispatchLoadTotalInstancesCount,
 }) {
@@ -49,15 +50,15 @@ export function DashboardSeriesPage({
   const { seriesId } = useParams();
 
   useEffect(() => {
-    dispatchLoadSeries(seriesId);
+    dispatchLoadSeriesObject(seriesId);
   }, []);
 
-  const loadSeriesPayload = { queryParams: {} };
+  const loadInstancesPayload = { queryParams: {} };
 
-  if (series) {
-    loadSeriesPayload.queryParams[
+  if (seriesObject) {
+    loadInstancesPayload.queryParams[
       Series.getFieldAttribute(FIELD_SERIES_INSTANCE_UID)
-    ] = series[FIELD_SERIES_INSTANCE_UID];
+    ] = seriesObject[FIELD_SERIES_INSTANCE_UID];
   }
 
   return (
@@ -69,14 +70,14 @@ export function DashboardSeriesPage({
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Paper sx={{ mt: 2 }}>
-              {series && (
+              {seriesObject && (
                 <ObjectsTable
                   injectSaga={{ key, saga }}
                   objectType={Instance}
                   objects={instances}
                   objectsCount={instancesCount}
                   dispatchLoadObjects={dispatchLoadInstances}
-                  dispatchLoadObjectsInitialPayload={loadSeriesPayload}
+                  dispatchLoadObjectsInitialPayload={loadInstancesPayload}
                   dispatchLoadTotalObjectsCount={
                     dispatchLoadTotalInstancesCount
                   }
@@ -92,18 +93,18 @@ export function DashboardSeriesPage({
 }
 
 DashboardSeriesPage.propTypes = {
-  series: PropTypes.instanceOf(Series),
+  seriesObject: PropTypes.instanceOf(Series),
   loading: PropTypes.bool.isRequired,
   errors: PropTypes.arrayOf(PropTypes.object).isRequired,
   instances: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]).isRequired,
   instancesCount: PropTypes.number.isRequired,
-  dispatchLoadSeries: PropTypes.func.isRequired,
+  dispatchLoadSeriesObject: PropTypes.func.isRequired,
   dispatchLoadInstances: PropTypes.func.isRequired,
   dispatchLoadTotalInstancesCount: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  series: makeSelectSeries(),
+  seriesObject: makeSelectSeriesObject(),
   loading: makeSelectLoading(),
   errors: makeSelectErrors(),
   instances: makeSelectInstances(),
@@ -112,7 +113,8 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    dispatchLoadSeries: seriesUID => dispatch(loadSeries(seriesUID)),
+    dispatchLoadSeriesObject: seriesUID =>
+      dispatch(loadSeriesObject(seriesUID)),
     dispatchLoadInstances: options => dispatch(loadInstances(options)),
     dispatchLoadTotalInstancesCount: options =>
       dispatch(loadTotalInstancesCount(options)),
