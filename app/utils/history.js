@@ -6,4 +6,5 @@ export const routes = {
   studyList: '/studies',
   study: '/studies/:studyId/series',
   series: '/studies/:studyId/series/:seriesId/instances',
+  instance: '/studies/:studyId/series/:seriesId/instances/:instanceId',
 };

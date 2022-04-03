@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { useParams } from 'react-router-dom';
+import { generatePath, useHistory, useParams } from 'react-router-dom';
 import { useInjectReducer } from '../../utils/injectReducer';
 import { useInjectSaga } from '../../utils/injectSaga';
 import reducer from './reducer';
@@ -24,11 +24,10 @@ import {
 import Backdrop from '../../components/Backdrop';
 import ErrorAlert from '../../components/ErrorAlert';
 import ObjectsTable from '../../components/ObjectsTable';
-import Series, {
-  FIELD_SERIES_INSTANCE_UID,
-} from '../../utils/dicom/parser/series';
+import Series from '../../utils/dicom/parser/series';
 import Instance from '../../utils/dicom/parser/instance';
 import { key } from './key';
+import { routes } from '../../utils/history';
 
 export function DashboardSeriesPage({
   seriesObject,
@@ -42,18 +41,23 @@ export function DashboardSeriesPage({
 }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
+  const history = useHistory();
+  const { seriesId, studyId } = useParams();
 
   const onInstanceClick = instanceUID => {
-    console.log(instanceUID);
+    const path = generatePath(routes.instance, {
+      instanceId: instanceUID,
+      studyId,
+      seriesId,
+    });
+    history.push(path);
   };
 
-  const { seriesId } = useParams();
-
   const wrongObjectLoaded =
-    seriesObject && seriesId !== seriesObject[FIELD_SERIES_INSTANCE_UID];
+    seriesObject && seriesId !== seriesObject[Series.getObjectIdField()];
 
   const objectFromParamsLoaded =
-    seriesObject && seriesId === seriesObject[FIELD_SERIES_INSTANCE_UID];
+    seriesObject && seriesId === seriesObject[Series.getObjectIdField()];
 
   useEffect(() => {
     dispatchLoadSeriesObject(seriesId);
@@ -63,8 +67,8 @@ export function DashboardSeriesPage({
 
   if (objectFromParamsLoaded) {
     loadInstancesPayload.queryParams[
-      Series.getFieldAttribute(FIELD_SERIES_INSTANCE_UID)
-    ] = seriesObject[FIELD_SERIES_INSTANCE_UID];
+      Series.getFieldAttribute(Series.getObjectIdField())
+    ] = seriesObject[Series.getObjectIdField()];
   }
 
   if (wrongObjectLoaded) {

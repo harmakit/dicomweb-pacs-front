@@ -20,9 +20,7 @@ import { loadSeries, loadStudyObject, loadTotalSeriesCount } from './actions';
 import Backdrop from '../../components/Backdrop';
 import ErrorAlert from '../../components/ErrorAlert';
 import ObjectsTable from '../../components/ObjectsTable';
-import Study, {
-  FIELD_STUDY_INSTANCE_UID,
-} from '../../utils/dicom/parser/study';
+import Study from '../../utils/dicom/parser/study';
 import Series from '../../utils/dicom/parser/series';
 import { routes } from '../../utils/history';
 import { key } from './key';
@@ -43,10 +41,10 @@ export function DashboardStudyPage({
   const { studyId } = useParams();
 
   const wrongObjectLoaded =
-    studyObject && studyId !== studyObject[FIELD_STUDY_INSTANCE_UID];
+    studyObject && studyId !== studyObject[Study.getObjectIdField()];
 
   const objectFromParamsLoaded =
-    studyObject && studyId === studyObject[FIELD_STUDY_INSTANCE_UID];
+    studyObject && studyId === studyObject[Study.getObjectIdField()];
 
   const onSeriesClick = seriesUID => {
     const path = generatePath(routes.series, {
@@ -64,8 +62,8 @@ export function DashboardStudyPage({
 
   if (objectFromParamsLoaded) {
     loadSeriesPayload.queryParams[
-      Study.getFieldAttribute(FIELD_STUDY_INSTANCE_UID)
-    ] = studyObject[FIELD_STUDY_INSTANCE_UID];
+      Study.getFieldAttribute(Study.getObjectIdField())
+    ] = studyObject[Study.getObjectIdField()];
   }
 
   if (wrongObjectLoaded) {

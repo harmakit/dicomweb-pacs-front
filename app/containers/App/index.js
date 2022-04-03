@@ -6,6 +6,7 @@ import DashboardPage from '../DashboardPage/Loadable';
 import DashboardStudyListPage from '../DashboardStudyListPage/Loadable';
 import DashboardStudyPage from '../DashboardStudyPage/Loadable';
 import DashboardSeriesPage from '../DashboardSeriesPage/Loadable';
+import DashboardInstancePage from '../DashboardInstancePage/Loadable';
 
 export default function App() {
   return (
@@ -36,6 +37,15 @@ export default function App() {
           render={() => (
             <DashboardPage>
               <DashboardSeriesPage />
+            </DashboardPage>
+          )}
+        />
+        <Route
+          exact
+          path={routes.instance}
+          render={() => (
+            <DashboardPage>
+              <DashboardInstancePage />
             </DashboardPage>
           )}
         />
