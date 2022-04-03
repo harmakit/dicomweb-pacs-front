@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Table,
   TableBody,
@@ -140,10 +140,18 @@ export default function ObjectsTable({
   );
   const rows = objects;
 
+  const dispatchLoadObjectsInitialPayloadHash = useMemo(
+    () =>
+      dispatchLoadObjectsInitialPayload
+        ? JSON.stringify(dispatchLoadObjectsInitialPayload)
+        : null,
+    [dispatchLoadObjectsInitialPayload],
+  );
+
   useEffect(() => {
     loadObjects(buildPaginationData());
     loadObjectsTotalCount();
-  }, []);
+  }, [dispatchLoadObjectsInitialPayloadHash]);
 
   const columns = getColumns(objectType);
   const rowKeyField = objectType.getObjectIdField();

@@ -42,6 +42,12 @@ export function DashboardStudyPage({
   const history = useHistory();
   const { studyId } = useParams();
 
+  const wrongObjectLoaded =
+    studyObject && studyId !== studyObject[FIELD_STUDY_INSTANCE_UID];
+
+  const objectFromParamsLoaded =
+    studyObject && studyId === studyObject[FIELD_STUDY_INSTANCE_UID];
+
   const onSeriesClick = seriesUID => {
     const path = generatePath(routes.series, {
       studyId,
@@ -52,14 +58,18 @@ export function DashboardStudyPage({
 
   useEffect(() => {
     dispatchLoadStudyObject(studyId);
-  }, []);
+  }, [studyId]);
 
   const loadSeriesPayload = { queryParams: {} };
 
-  if (studyObject) {
+  if (objectFromParamsLoaded) {
     loadSeriesPayload.queryParams[
       Study.getFieldAttribute(FIELD_STUDY_INSTANCE_UID)
     ] = studyObject[FIELD_STUDY_INSTANCE_UID];
+  }
+
+  if (wrongObjectLoaded) {
+    return null;
   }
 
   return (

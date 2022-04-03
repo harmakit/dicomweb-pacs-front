@@ -49,16 +49,26 @@ export function DashboardSeriesPage({
 
   const { seriesId } = useParams();
 
+  const wrongObjectLoaded =
+    seriesObject && seriesId !== seriesObject[FIELD_SERIES_INSTANCE_UID];
+
+  const objectFromParamsLoaded =
+    seriesObject && seriesId === seriesObject[FIELD_SERIES_INSTANCE_UID];
+
   useEffect(() => {
     dispatchLoadSeriesObject(seriesId);
-  }, []);
+  }, [seriesId]);
 
   const loadInstancesPayload = { queryParams: {} };
 
-  if (seriesObject) {
+  if (objectFromParamsLoaded) {
     loadInstancesPayload.queryParams[
       Series.getFieldAttribute(FIELD_SERIES_INSTANCE_UID)
     ] = seriesObject[FIELD_SERIES_INSTANCE_UID];
+  }
+
+  if (wrongObjectLoaded) {
+    return null;
   }
 
   return (
