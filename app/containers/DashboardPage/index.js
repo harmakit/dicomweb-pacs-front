@@ -3,11 +3,9 @@ import {
   AppBar,
   Badge,
   Box,
-  Breadcrumbs,
   Container,
   Drawer,
   IconButton,
-  Link,
   List,
   ListItem,
   ListItemIcon,
@@ -18,6 +16,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import ViewListIcon from '@mui/icons-material/ViewList';
+import PreviewIcon from '@mui/icons-material/Preview';
 import HomeIcon from '@mui/icons-material/Home';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
@@ -32,6 +31,7 @@ import reducer from './reducer';
 import { makeSelectIsDrawerOpen } from './selectors';
 import { closeDrawer, openDrawer } from './actions';
 import { routes } from '../../utils/history';
+import Breadcrumbs from '../../components/Breadcrumbs';
 
 const key = 'dashboard';
 
@@ -47,6 +47,7 @@ function DashboardPage({
     history.push(route);
     onDrawerClose();
   };
+
   return (
     <Box>
       <AppBar position="absolute">
@@ -68,6 +69,12 @@ function DashboardPage({
             <Badge badgeContent={0} color="secondary">
               <NotificationsIcon />
             </Badge>
+          </IconButton>
+          <IconButton
+            color="inherit"
+            onClick={() => alert('open tab with `viewImage` route')}
+          >
+            <PreviewIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -111,6 +118,9 @@ function DashboardPage({
         }}
       >
         <Toolbar />
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Breadcrumbs />
+        </Container>
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           {children}
         </Container>
