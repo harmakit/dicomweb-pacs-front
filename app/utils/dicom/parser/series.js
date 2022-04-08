@@ -1,5 +1,5 @@
-import DicomObjectAbstract from './object';
 import Study from './study';
+import DicomObjectAbstract from './object';
 
 const FIELD_MODALITY = 'modality';
 const FIELD_SERIES_INSTANCE_UID = 'seriesInstanceUID';
@@ -12,10 +12,11 @@ const FIELD_REQUEST_ATTRIBUTES_SEQUENCE = 'requestAttributesSequence';
 const FIELD_SCHEDULED_PROCEDURE_STEP_ID = 'scheduledProcedureStepId';
 const FIELD_REQUESTED_PROCEDURE_ID = 'requestedProcedureId';
 
-class Series extends Study {
+class Series extends DicomObjectAbstract {
   constructor(data) {
     super(data);
     const fields = [
+      Study.getObjectIdField(),
       FIELD_MODALITY,
       FIELD_SERIES_INSTANCE_UID,
       FIELD_SERIES_NUMBER,
@@ -54,6 +55,8 @@ class Series extends Study {
         return '00400009';
       case FIELD_REQUESTED_PROCEDURE_ID:
         return '00401001';
+      case Study.getObjectIdField():
+        return Study.getFieldAttribute(Study.getObjectIdField());
       default:
         throw new Error(`[Series] Unmapped field: ${field}`);
     }

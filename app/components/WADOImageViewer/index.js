@@ -66,9 +66,9 @@ function getTools() {
 }
 
 function ImageViewer(props) {
-  const { imageIds } = props;
+  const { urls } = props;
   const [initialized, setInitialized] = useState(false);
-  const shouldRenderImages = Array.isArray(imageIds) && imageIds.length !== 0;
+  const shouldRenderImages = Array.isArray(urls) && urls.length !== 0;
 
   useEffect(() => {
     if (shouldRenderImages && !initialized) {
@@ -84,14 +84,14 @@ function ImageViewer(props) {
   return (
     <CornerstoneViewport
       tools={getTools()}
-      imageIds={imageIds}
+      imageIds={urls}
       style={{ minWidth: '100%', height: '512px', flex: '1' }}
     />
   );
 }
 
 ImageViewer.propTypes = {
-  imageIds: PropTypes.arrayOf(PropTypes.string),
+  urls: PropTypes.arrayOf(PropTypes.string),
 };
 
 // imageIds example:

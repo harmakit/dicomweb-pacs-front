@@ -1,13 +1,17 @@
 import Series from './series';
+import DicomObjectAbstract from './object';
+import Study from './study';
 
 const FIELD_SOP_CLASS_UID = 'SOP Class UID';
 const FIELD_SOP_INSTANCE_UID = 'SOP Instance UID';
 const FIELD_INSTANCE_NUMBER = 'Instance Number';
 
-class Instance extends Series {
+class Instance extends DicomObjectAbstract {
   constructor(data) {
     super(data);
     const fields = [
+      Study.getObjectIdField(),
+      Series.getObjectIdField(),
       FIELD_SOP_CLASS_UID,
       FIELD_SOP_INSTANCE_UID,
       FIELD_INSTANCE_NUMBER,
@@ -31,6 +35,10 @@ class Instance extends Series {
         return '00080018';
       case FIELD_INSTANCE_NUMBER:
         return '00200013';
+      case Study.getObjectIdField():
+        return Study.getFieldAttribute(Study.getObjectIdField());
+      case Series.getObjectIdField():
+        return Series.getFieldAttribute(Series.getObjectIdField());
       default:
         throw new Error(`[Instance] Unmapped field: ${field}`);
     }

@@ -46,7 +46,6 @@ export function DashboardInstancePage({
   }
 
   const url = instanceObject ? imageHelper.buildImageUrl(instanceObject) : null;
-  console.log(url);
 
   return (
     <div>
@@ -56,7 +55,9 @@ export function DashboardInstancePage({
         ))}
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <Paper sx={{ mt: 2 }}>{url && <WADOImageViewer url={url} />}</Paper>
+            <Paper sx={{ mt: 2 }}>
+              {url && <WADOImageViewer urls={[url]} />}
+            </Paper>
           </Grid>
         </Grid>
       </Backdrop>

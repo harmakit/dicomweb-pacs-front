@@ -7,4 +7,6 @@ export const routes = {
   study: '/studies/:studyId/series',
   series: '/studies/:studyId/series/:seriesId/instances',
   instance: '/studies/:studyId/series/:seriesId/instances/:instanceId',
+  viewImages:
+    '/view/(study)?/:studyId?/(series)?/:seriesId?/(instance)?/:instanceId?',
 };

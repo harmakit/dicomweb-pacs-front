@@ -7,6 +7,7 @@ import DashboardStudyListPage from '../DashboardStudyListPage/Loadable';
 import DashboardStudyPage from '../DashboardStudyPage/Loadable';
 import DashboardSeriesPage from '../DashboardSeriesPage/Loadable';
 import DashboardInstancePage from '../DashboardInstancePage/Loadable';
+import DashboardViewImagesPage from '../DashboardViewImagesPage/Loadable';
 
 export default function App() {
   return (
@@ -46,6 +47,15 @@ export default function App() {
           render={() => (
             <DashboardPage>
               <DashboardInstancePage />
+            </DashboardPage>
+          )}
+        />
+        <Route
+          exact
+          path={routes.viewImages}
+          render={() => (
+            <DashboardPage>
+              <DashboardViewImagesPage />
             </DashboardPage>
           )}
         />
