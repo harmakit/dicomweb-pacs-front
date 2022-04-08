@@ -28,6 +28,7 @@ import Series from '../../utils/dicom/parser/series';
 import Instance from '../../utils/dicom/parser/instance';
 import { key } from './key';
 import { routes } from '../../utils/history';
+import DicomObjectInfo from '../../components/DicomObjectInfo';
 
 export function DashboardSeriesPage({
   seriesObject,
@@ -81,6 +82,7 @@ export function DashboardSeriesPage({
         {errors.map(error => (
           <ErrorAlert key={error.id} error={error} />
         ))}
+        {seriesObject && <DicomObjectInfo object={seriesObject} />}
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Paper sx={{ mt: 2 }}>

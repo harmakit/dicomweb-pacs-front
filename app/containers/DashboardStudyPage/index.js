@@ -24,6 +24,7 @@ import Study from '../../utils/dicom/parser/study';
 import Series from '../../utils/dicom/parser/series';
 import { routes } from '../../utils/history';
 import { key } from './key';
+import DicomObjectInfo from '../../components/DicomObjectInfo';
 
 export function DashboardStudyPage({
   studyObject,
@@ -63,7 +64,7 @@ export function DashboardStudyPage({
   if (objectFromParamsLoaded) {
     loadSeriesPayload.queryParams[
       Study.getFieldAttribute(Study.getObjectIdField())
-    ] = studyObject[Study.getObjectIdField()];
+      ] = studyObject[Study.getObjectIdField()];
   }
 
   if (wrongObjectLoaded) {
@@ -76,6 +77,7 @@ export function DashboardStudyPage({
         {errors.map(error => (
           <ErrorAlert key={error.id} error={error} />
         ))}
+        {studyObject && <DicomObjectInfo object={studyObject} />}
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Paper sx={{ mt: 2 }}>

@@ -1,7 +1,7 @@
 import React from 'react';
-import { matchPath, useLocation, Link } from 'react-router-dom';
+import { Link, matchPath, useLocation } from 'react-router-dom';
 import TreeModel from 'tree-model';
-import { Typography, Breadcrumbs as MUIBreadcrumbs } from '@mui/material';
+import { Breadcrumbs as MUIBreadcrumbs, Typography } from '@mui/material';
 import { routes } from '../../utils/history';
 
 const tree = new TreeModel();
@@ -30,7 +30,7 @@ const root = tree.parse({
   ],
 });
 
-export default function Breadcrumbs(props) {
+export default function Breadcrumbs() {
   const location = useLocation();
   if (!location) {
     return null;
@@ -104,6 +104,4 @@ export default function Breadcrumbs(props) {
   );
 }
 
-Breadcrumbs.propTypes = {
-  // location: PropTypes.object.isRequired,
-};
+Breadcrumbs.propTypes = {};

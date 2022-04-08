@@ -21,6 +21,7 @@ import Instance from '../../utils/dicom/parser/instance';
 import { key } from './key';
 import imageHelper from '../../utils/dicom/wado/imageHelper';
 import WADOImageViewer from '../../components/WADOImageViewer';
+import DicomObjectInfo from '../../components/DicomObjectInfo';
 
 export function DashboardInstancePage({
   instanceObject,
@@ -53,6 +54,7 @@ export function DashboardInstancePage({
         {errors.map(error => (
           <ErrorAlert key={error.id} error={error} />
         ))}
+        {instanceObject && <DicomObjectInfo object={instanceObject} />}
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Paper sx={{ mt: 2 }}>
