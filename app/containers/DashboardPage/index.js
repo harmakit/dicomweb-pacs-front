@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, {memo} from 'react';
 import {
   AppBar,
   Badge,
@@ -16,21 +16,21 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import ViewListIcon from '@mui/icons-material/ViewList';
-import PreviewIcon from '@mui/icons-material/Preview';
+import UploadIcon from '@mui/icons-material/Upload';
 import HomeIcon from '@mui/icons-material/Home';
-import { FormattedMessage } from 'react-intl';
+import {FormattedMessage} from 'react-intl';
 import PropTypes from 'prop-types';
 
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { useHistory } from 'react-router-dom';
+import {createStructuredSelector} from 'reselect';
+import {connect} from 'react-redux';
+import {compose} from 'redux';
+import {useHistory} from 'react-router-dom';
 import messages from './messages';
-import { useInjectReducer } from '../../utils/injectReducer';
+import {useInjectReducer} from '../../utils/injectReducer';
 import reducer from './reducer';
-import { makeSelectIsDrawerOpen } from './selectors';
-import { closeDrawer, openDrawer } from './actions';
-import { routes } from '../../utils/history';
+import {makeSelectIsDrawerOpen} from './selectors';
+import {closeDrawer, openDrawer} from './actions';
+import {routes} from '../../utils/history';
 import Breadcrumbs from '../../components/Breadcrumbs';
 
 const key = 'dashboard';
@@ -70,12 +70,6 @@ function DashboardPage({
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <IconButton
-            color="inherit"
-            onClick={() => alert('open tab with `viewImage` route')}
-          >
-            <PreviewIcon />
-          </IconButton>
         </Toolbar>
       </AppBar>
 
@@ -99,6 +93,14 @@ function DashboardPage({
               </ListItemIcon>
               <ListItemText
                 primary=<FormattedMessage {...messages.menu.studies} />
+              />
+            </ListItem>
+            <ListItem button onClick={() => onDrawerItemClick(routes.upload)}>
+              <ListItemIcon>
+                <UploadIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary=<FormattedMessage {...messages.menu.upload} />
               />
             </ListItem>
           </List>

@@ -1,8 +1,10 @@
-import { createBrowserHistory } from 'history';
+import {createBrowserHistory} from 'history';
+
 const history = createBrowserHistory();
 export default history;
 export const routes = {
   home: '/',
+  upload: '/upload',
   studyList: '/studies',
   study: '/studies/:studyId/series',
   series: '/studies/:studyId/series/:seriesId/instances',

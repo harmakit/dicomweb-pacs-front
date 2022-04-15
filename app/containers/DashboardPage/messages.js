@@ -1,4 +1,4 @@
-import { defineMessages } from 'react-intl';
+import {defineMessages} from 'react-intl';
 
 export const scope = 'app.containers.DashboardPage';
 
@@ -12,6 +12,9 @@ export default defineMessages({
     },
     studies: {
       id: `${scope}.menu.studies`,
+    },
+    upload: {
+      id: `${scope}.menu.upload`,
     },
   },
 });

@@ -2,6 +2,7 @@
   "app.containers.DashboardPage.header": "Dashboard",
   "app.containers.DashboardPage.menu.home": "Home",
   "app.containers.DashboardPage.menu.studies": "Studies",
+  "app.containers.DashboardPage.menu.upload": "Upload",
 
   "app.containers.NotFoundPage.header": "Page not found"
 }

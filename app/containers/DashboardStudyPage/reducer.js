@@ -26,7 +26,7 @@ export const initialState = {
 };
 
 /* eslint-disable default-case, no-param-reassign */
-const dashboardSeriesReducer = (state = initialState, action) =>
+const reducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
       case LOAD_STUDY_OBJECT:
@@ -68,4 +68,4 @@ const dashboardSeriesReducer = (state = initialState, action) =>
     }
   });
 
-export default dashboardSeriesReducer;
+export default reducer;

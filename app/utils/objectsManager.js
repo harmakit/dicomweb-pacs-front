@@ -1,12 +1,14 @@
 import DICOMwebClient from 'dicomweb-client/src/api';
-import { merge } from 'lodash';
+import {merge} from 'lodash';
 import parser from './dicom/parser';
 import Study from './dicom/parser/study';
 import Series from './dicom/parser/series';
 import Instance from './dicom/parser/instance';
+import config from '../params';
 
-const BASE_URL = 'http://localhost:8042/dicom-web';
-const client = new DICOMwebClient({ url: BASE_URL });
+const client = new DICOMwebClient({
+  url: config.wadoURL,
+});
 
 class ObjectsManager {
   #cache = new Map([[Study, []], [Series, []], [Instance, []]]);
@@ -89,6 +91,12 @@ class ObjectsManager {
         this.#cacheObjects(parsed);
       }
       return parsed;
+    });
+  }
+
+  uploadObjects(objects) {
+    client.storeInstances({ datasets: objects }).then(response => {
+      console.log('response', response);
     });
   }
 }

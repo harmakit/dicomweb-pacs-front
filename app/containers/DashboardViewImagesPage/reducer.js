@@ -1,9 +1,5 @@
 import produce from 'immer';
-import {
-  LOAD_INSTANCES,
-  LOAD_INSTANCES_ERROR,
-  LOAD_INSTANCES_SUCCESS,
-} from './constants';
+import {LOAD_INSTANCES, LOAD_INSTANCES_ERROR, LOAD_INSTANCES_SUCCESS,} from './constants';
 
 export const initialState = {
   instancesLoading: false,
@@ -14,7 +10,7 @@ export const initialState = {
 };
 
 /* eslint-disable default-case, no-param-reassign */
-const dashboardInstanceReducer = (state = initialState, action) =>
+const reducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
       case LOAD_INSTANCES:
@@ -32,4 +28,4 @@ const dashboardInstanceReducer = (state = initialState, action) =>
     }
   });
 
-export default dashboardInstanceReducer;
+export default reducer;
