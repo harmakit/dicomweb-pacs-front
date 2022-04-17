@@ -3,10 +3,12 @@ import ObjectsManager from '../../utils/objectsManager';
 import {objectsUploaded, objectsUploadingError} from './actions';
 import {UPLOAD_OBJECTS} from './constants';
 
-export function* store({ objects }) {
+export function* store({ arrayBuffers }) {
   try {
-    const uploaded = yield call(() => ObjectsManager.uploadObjects(objects));
-    yield put(objectsUploaded(uploaded));
+    const response = yield call(() =>
+      ObjectsManager.uploadObjects(arrayBuffers),
+    );
+    yield put(objectsUploaded(response));
   } catch (err) {
     yield put(objectsUploadingError(err));
   }

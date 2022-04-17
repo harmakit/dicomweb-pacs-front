@@ -13,11 +13,11 @@ import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PreviewIcon from '@mui/icons-material/Preview';
 import {generatePath} from 'react-router-dom';
-import DicomObjectAbstract from '../../utils/dicom/parser/object';
 import {routes} from '../../utils/history';
 import Study from '../../utils/dicom/parser/study';
 import Series from '../../utils/dicom/parser/series';
 import Instance from '../../utils/dicom/parser/instance';
+import DicomObjectWithIdAbstract from '../../utils/dicom/parser/objectWithId';
 
 export default function DicomObjectInfo({ object }) {
   const [expanded, setExpanded] = React.useState(false);
@@ -104,5 +104,5 @@ export default function DicomObjectInfo({ object }) {
 }
 
 DicomObjectInfo.propTypes = {
-  object: PropTypes.instanceOf(DicomObjectAbstract).isRequired,
+  object: PropTypes.instanceOf(DicomObjectWithIdAbstract).isRequired,
 };

@@ -8,13 +8,6 @@ class DicomObjectAbstract {
     this.#raw = data;
   }
 
-  /**
-   * @return string
-   */
-  static getObjectIdField() {
-    throw new Error('Should return field');
-  }
-
   parseAttribute(attribute) {
     if (!attribute) {
       return null;

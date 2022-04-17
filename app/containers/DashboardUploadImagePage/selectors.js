@@ -10,6 +10,18 @@ const makeSelectLoading = () =>
     state => state.objectsUploading,
   );
 
+const makeSelectResponse = () =>
+  createSelector(
+    selectDashboardUploadImages,
+    state => state.objectsUploadingResponse,
+  );
+
+const makeSelectFiles = () =>
+  createSelector(
+    selectDashboardUploadImages,
+    state => state.files,
+  );
+
 const makeSelectErrors = () =>
   createSelector(
     selectDashboardUploadImages,
@@ -22,4 +34,10 @@ const makeSelectErrors = () =>
     },
   );
 
-export { selectDashboardUploadImages, makeSelectLoading, makeSelectErrors };
+export {
+  selectDashboardUploadImages,
+  makeSelectLoading,
+  makeSelectErrors,
+  makeSelectResponse,
+  makeSelectFiles,
+};

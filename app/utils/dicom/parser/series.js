@@ -1,5 +1,5 @@
 import Study from './study';
-import DicomObjectAbstract from './object';
+import DicomObjectWithIdAbstract from './objectWithId';
 
 const FIELD_MODALITY = 'modality';
 const FIELD_SERIES_INSTANCE_UID = 'seriesInstanceUID';
@@ -12,7 +12,7 @@ const FIELD_REQUEST_ATTRIBUTES_SEQUENCE = 'requestAttributesSequence';
 const FIELD_SCHEDULED_PROCEDURE_STEP_ID = 'scheduledProcedureStepId';
 const FIELD_REQUESTED_PROCEDURE_ID = 'requestedProcedureId';
 
-class Series extends DicomObjectAbstract {
+class Series extends DicomObjectWithIdAbstract {
   constructor(data) {
     super(data);
     const fields = [

@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {Button, Grid, List, ListItem, ListItemText, Paper, Typography,} from '@mui/material';
+import {Alert, Button, Grid, List, ListItem, ListItemText, Paper, Typography,} from '@mui/material';
 import PropTypes from 'prop-types';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
@@ -10,11 +10,12 @@ import {useInjectReducer} from '../../utils/injectReducer';
 import {useInjectSaga} from '../../utils/injectSaga';
 import reducer from './reducer';
 import saga from './saga';
-import {makeSelectErrors, makeSelectLoading} from './selectors';
-import {uploadObjects} from './actions';
+import {makeSelectErrors, makeSelectFiles, makeSelectLoading, makeSelectResponse,} from './selectors';
+import {selectFiles, uploadObjects} from './actions';
 import Backdrop from '../../components/Backdrop';
 import ErrorAlert from '../../components/ErrorAlert';
 import {key} from './key';
+import STOWResponse, {FIELD_RETRIEVE_URL,} from '../../utils/dicom/parser/stowResponse';
 
 const Input = styled('input')({
   display: 'none',
@@ -24,22 +25,32 @@ export function DashboardViewImagesPage({
   loading,
   errors,
   dispatchUploadObjects,
+  response,
+  files,
+  dispatchSelectFiles,
 }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
-  const [files, setFiles] = React.useState([]);
-
   const handleFilesInputChange = e => {
-    setFiles(Array.from(e.target.files));
+    dispatchSelectFiles(Array.from(e.target.files));
   };
 
   const handleClickUpload = () => {
-    dispatchUploadObjects(files);
+    Promise.all(files.map(file => file.arrayBuffer()))
+      .then(buffers => {
+        dispatchUploadObjects(buffers);
+      })
+      .catch(err => {
+        console.error(err);
+      });
   };
 
   const inputId = uuidv4();
   const showUploadButton = files.length > 0;
+
+  const showResult = !loading && response;
+  const successfulUpload = showResult && response[FIELD_RETRIEVE_URL];
 
   return (
     <div>
@@ -66,6 +77,13 @@ export function DashboardViewImagesPage({
           {showUploadButton && (
             <Grid item xs={12}>
               <Paper sx={{ p: 1, overflow: 'auto', maxHeight: 200 }}>
+                {showResult && (
+                  <Alert severity={successfulUpload ? 'success' : 'error'}>
+                    {successfulUpload
+                      ? 'Successfully uploaded'
+                      : 'Failed to upload'}
+                  </Alert>
+                )}
                 <Typography variant="h6">Selected files:</Typography>
                 <List dense>
                   {files.map(file => (
@@ -98,16 +116,23 @@ DashboardViewImagesPage.propTypes = {
   loading: PropTypes.bool.isRequired,
   errors: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatchUploadObjects: PropTypes.func.isRequired,
+  response: PropTypes.instanceOf(STOWResponse),
+  files: PropTypes.arrayOf(PropTypes.instanceOf(File)).isRequired,
+  dispatchSelectFiles: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   loading: makeSelectLoading(),
   errors: makeSelectErrors(),
+  response: makeSelectResponse(),
+  files: makeSelectFiles(),
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
-    dispatchUploadObjects: options => dispatch(uploadObjects(options)),
+    dispatchUploadObjects: arrayBuffers =>
+      dispatch(uploadObjects(arrayBuffers)),
+    dispatchSelectFiles: files => dispatch(selectFiles(files)),
   };
 }
 

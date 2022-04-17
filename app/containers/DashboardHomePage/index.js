@@ -16,7 +16,7 @@ function DashboardHomePage() {
   useInjectReducer({ key, reducer });
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} textAlign="center">
       <Grid item container xs={12}>
         <Paper sx={{ p: 3, width: '100%' }}>
           <Link to={routes.studyList}>Go to studies</Link>
@@ -24,9 +24,7 @@ function DashboardHomePage() {
       </Grid>
       <Grid item container xs={12}>
         <Paper sx={{ p: 3, width: '100%' }}>
-          <Link disabled to={routes.home}>
-            Upload DICOM file
-          </Link>
+          <Link to={routes.upload}>Upload DICOM file</Link>
         </Paper>
       </Grid>
     </Grid>

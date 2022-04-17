@@ -1,16 +1,24 @@
-import {UPLOAD_OBJECTS, UPLOAD_OBJECTS_ERROR, UPLOAD_OBJECTS_SUCCESS,} from './constants';
+import {SELECT_FILES, UPLOAD_OBJECTS, UPLOAD_OBJECTS_ERROR, UPLOAD_OBJECTS_SUCCESS,} from './constants';
 import {packError} from '../../utils/errors';
 
-export function uploadObjects(objects) {
+export function selectFiles(files) {
   return {
-    type: UPLOAD_OBJECTS,
-    objects,
+    type: SELECT_FILES,
+    files,
   };
 }
 
-export function objectsUploaded() {
+export function uploadObjects(arrayBuffers) {
+  return {
+    type: UPLOAD_OBJECTS,
+    arrayBuffers,
+  };
+}
+
+export function objectsUploaded(response) {
   return {
     type: UPLOAD_OBJECTS_SUCCESS,
+    response,
   };
 }
 

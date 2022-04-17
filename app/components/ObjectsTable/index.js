@@ -1,15 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-} from '@mui/material';
+import React, {useEffect, useMemo, useState} from 'react';
+import {Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow,} from '@mui/material';
 import PropTypes from 'prop-types';
-import { merge, noop } from 'lodash';
+import {merge, noop} from 'lodash';
 import Study, {
   FIELD_ACCESSION_NUMBER,
   FIELD_MODALITIES_IN_STUDY,
@@ -21,9 +13,8 @@ import Study, {
   FIELD_STUDY_INSTANCE_UID,
   FIELD_STUDY_TIME,
 } from '../../utils/dicom/parser/study';
-import DicomObjectAbstract from '../../utils/dicom/parser/object';
-import { useInjectSaga } from '../../utils/injectSaga';
-import { allowedModes } from '../../utils/sagaInjectors';
+import {useInjectSaga} from '../../utils/injectSaga';
+import {allowedModes} from '../../utils/sagaInjectors';
 import Series, {
   FIELD_MODALITY,
   FIELD_PERFORMED_PROCEDURE_STEP_START_DATE,
@@ -39,6 +30,7 @@ import Instance, {
   FIELD_SOP_CLASS_UID,
   FIELD_SOP_INSTANCE_UID,
 } from '../../utils/dicom/parser/instance';
+import DicomObjectWithIdAbstract from '../../utils/dicom/parser/objectWithId';
 
 export const PAGINATION_DEFAULT_PAGE = 0;
 export const PAGINATION_ROWS_PER_PAGE_OPTIONS = [5, 10, 25, 100];
@@ -261,7 +253,7 @@ export default function ObjectsTable({
 
 ObjectsTable.propTypes = {
   objectType: PropTypes.func.isRequired,
-  objects: PropTypes.arrayOf(PropTypes.instanceOf(DicomObjectAbstract))
+  objects: PropTypes.arrayOf(PropTypes.instanceOf(DicomObjectWithIdAbstract))
     .isRequired,
   objectsCount: PropTypes.number.isRequired,
   onObjectClick: PropTypes.func.isRequired,

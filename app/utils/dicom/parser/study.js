@@ -1,4 +1,4 @@
-import DicomObjectAbstract from './object';
+import DicomObjectWithIdAbstract from './objectWithId';
 
 const FIELD_STUDY_DATE = 'studyDate';
 const FIELD_STUDY_TIME = 'studyTime';
@@ -10,7 +10,7 @@ const FIELD_PATIENT_ID = 'patientID';
 const FIELD_STUDY_INSTANCE_UID = 'studyInstanceUID';
 const FIELD_STUDY_ID = 'studyID';
 
-class Study extends DicomObjectAbstract {
+class Study extends DicomObjectWithIdAbstract {
   constructor(data) {
     super(data);
     const fields = [
