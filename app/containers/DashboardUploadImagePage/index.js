@@ -1,21 +1,37 @@
-import React, {memo} from 'react';
-import {Alert, Button, Grid, List, ListItem, ListItemText, Paper, Typography,} from '@mui/material';
+import React, { memo } from 'react';
+import {
+  Alert,
+  Button,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
+  Typography,
+} from '@mui/material';
 import PropTypes from 'prop-types';
-import {compose} from 'redux';
-import {connect} from 'react-redux';
-import {createStructuredSelector} from 'reselect';
-import {styled} from '@mui/material/styles';
-import {v4 as uuidv4} from 'uuid';
-import {useInjectReducer} from '../../utils/injectReducer';
-import {useInjectSaga} from '../../utils/injectSaga';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { styled } from '@mui/material/styles';
+import { v4 as uuidv4 } from 'uuid';
+import { useInjectReducer } from '../../utils/injectReducer';
+import { useInjectSaga } from '../../utils/injectSaga';
 import reducer from './reducer';
 import saga from './saga';
-import {makeSelectErrors, makeSelectFiles, makeSelectLoading, makeSelectResponse,} from './selectors';
-import {selectFiles, uploadObjects} from './actions';
+import {
+  makeSelectErrors,
+  makeSelectFiles,
+  makeSelectLoading,
+  makeSelectResponse,
+} from './selectors';
+import { selectFiles, uploadObjects } from './actions';
 import Backdrop from '../../components/Backdrop';
 import ErrorAlert from '../../components/ErrorAlert';
-import {key} from './key';
-import STOWResponse, {FIELD_RETRIEVE_URL,} from '../../utils/dicom/parser/stowResponse';
+import { key } from './key';
+import STOWResponse, {
+  FIELD_RETRIEVE_URL,
+} from '../../utils/dicom/parser/stowResponse';
 
 const Input = styled('input')({
   display: 'none',

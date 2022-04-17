@@ -1,5 +1,5 @@
 import DICOMwebClient from 'dicomweb-client/src/api';
-import {merge} from 'lodash';
+import { merge } from 'lodash';
 import parser from './dicom/parser';
 import Study from './dicom/parser/study';
 import Series from './dicom/parser/series';

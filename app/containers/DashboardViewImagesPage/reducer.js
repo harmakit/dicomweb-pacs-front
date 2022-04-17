@@ -1,5 +1,9 @@
 import produce from 'immer';
-import {LOAD_INSTANCES, LOAD_INSTANCES_ERROR, LOAD_INSTANCES_SUCCESS,} from './constants';
+import {
+  LOAD_INSTANCES,
+  LOAD_INSTANCES_ERROR,
+  LOAD_INSTANCES_SUCCESS,
+} from './constants';
 
 export const initialState = {
   instancesLoading: false,

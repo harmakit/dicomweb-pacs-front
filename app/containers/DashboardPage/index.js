@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import {
   AppBar,
   Badge,
@@ -18,19 +18,19 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import UploadIcon from '@mui/icons-material/Upload';
 import HomeIcon from '@mui/icons-material/Home';
-import {FormattedMessage} from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 
-import {createStructuredSelector} from 'reselect';
-import {connect} from 'react-redux';
-import {compose} from 'redux';
-import {useHistory} from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { useHistory } from 'react-router-dom';
 import messages from './messages';
-import {useInjectReducer} from '../../utils/injectReducer';
+import { useInjectReducer } from '../../utils/injectReducer';
 import reducer from './reducer';
-import {makeSelectIsDrawerOpen} from './selectors';
-import {closeDrawer, openDrawer} from './actions';
-import {routes} from '../../utils/history';
+import { makeSelectIsDrawerOpen } from './selectors';
+import { closeDrawer, openDrawer } from './actions';
+import { routes } from '../../utils/history';
 import Breadcrumbs from '../../components/Breadcrumbs';
 
 const key = 'dashboard';

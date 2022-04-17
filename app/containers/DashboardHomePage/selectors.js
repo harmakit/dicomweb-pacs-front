@@ -1,4 +1,4 @@
-import {initialState} from './reducer';
+import { initialState } from './reducer';
 
 const selectDashboard = state => state.dashboard || initialState;
 

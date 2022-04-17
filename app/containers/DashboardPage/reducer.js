@@ -1,5 +1,5 @@
 import produce from 'immer';
-import {CLOSE_DRAWER, OPEN_DRAWER} from './constants';
+import { CLOSE_DRAWER, OPEN_DRAWER } from './constants';
 
 export const initialState = {
   isDrawerOpen: false,

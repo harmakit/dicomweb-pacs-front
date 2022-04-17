@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -12,8 +12,8 @@ import {
 import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PreviewIcon from '@mui/icons-material/Preview';
-import {generatePath} from 'react-router-dom';
-import {routes} from '../../utils/history';
+import { generatePath } from 'react-router-dom';
+import { routes } from '../../utils/history';
 import Study from '../../utils/dicom/parser/study';
 import Series from '../../utils/dicom/parser/series';
 import Instance from '../../utils/dicom/parser/instance';

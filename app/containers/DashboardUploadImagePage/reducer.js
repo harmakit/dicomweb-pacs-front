@@ -1,5 +1,10 @@
 import produce from 'immer';
-import {SELECT_FILES, UPLOAD_OBJECTS, UPLOAD_OBJECTS_ERROR, UPLOAD_OBJECTS_SUCCESS,} from './constants';
+import {
+  SELECT_FILES,
+  UPLOAD_OBJECTS,
+  UPLOAD_OBJECTS_ERROR,
+  UPLOAD_OBJECTS_SUCCESS,
+} from './constants';
 
 export const initialState = {
   files: [],

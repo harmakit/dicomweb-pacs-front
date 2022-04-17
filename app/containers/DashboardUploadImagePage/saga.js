@@ -1,7 +1,7 @@
-import {call, put, takeLatest} from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import ObjectsManager from '../../utils/objectsManager';
-import {objectsUploaded, objectsUploadingError} from './actions';
-import {UPLOAD_OBJECTS} from './constants';
+import { objectsUploaded, objectsUploadingError } from './actions';
+import { UPLOAD_OBJECTS } from './constants';
 
 export function* store({ arrayBuffers }) {
   try {

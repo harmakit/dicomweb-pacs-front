@@ -1,14 +1,14 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 // import PropTypes from 'prop-types';
-import {Grid, Paper} from '@mui/material';
-import {createStructuredSelector} from 'reselect';
-import {connect} from 'react-redux';
-import {compose} from 'redux';
+import { Grid, Paper } from '@mui/material';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 // import { useHistory } from 'react-router-dom';
-import {Link} from 'react-router-dom';
-import {useInjectReducer} from '../../utils/injectReducer';
+import { Link } from 'react-router-dom';
+import { useInjectReducer } from '../../utils/injectReducer';
 import reducer from './reducer';
-import {routes} from '../../utils/history';
+import { routes } from '../../utils/history';
 
 const key = 'dashboardHome';
 
