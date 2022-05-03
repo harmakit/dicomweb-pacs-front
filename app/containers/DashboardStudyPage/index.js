@@ -25,6 +25,7 @@ import Series from '../../utils/dicom/parser/series';
 import { routes } from '../../utils/history';
 import { key } from './key';
 import DicomObjectInfo from '../../components/DicomObjectInfo';
+import ObjectsTableOld from '../../components/ObjectsTable/old';
 
 export function DashboardStudyPage({
   studyObject,
@@ -64,7 +65,7 @@ export function DashboardStudyPage({
   if (objectFromParamsLoaded) {
     loadSeriesPayload.queryParams[
       Study.getFieldAttribute(Study.getObjectIdField())
-      ] = studyObject[Study.getObjectIdField()];
+    ] = studyObject[Study.getObjectIdField()];
   }
 
   if (wrongObjectLoaded) {
@@ -83,6 +84,18 @@ export function DashboardStudyPage({
             <Paper sx={{ mt: 2 }}>
               {studyObject && (
                 <ObjectsTable
+                  injectSaga={{ key, saga }}
+                  objectType={Series}
+                  objects={series}
+                  objectsCount={seriesCount}
+                  dispatchLoadObjects={dispatchLoadSeries}
+                  dispatchLoadObjectsInitialPayload={loadSeriesPayload}
+                  dispatchLoadTotalObjectsCount={dispatchLoadTotalSeriesCount}
+                  onObjectClick={onSeriesClick}
+                />
+              )}
+              {studyObject && (
+                <ObjectsTableOld
                   injectSaga={{ key, saga }}
                   objectType={Series}
                   objects={series}
