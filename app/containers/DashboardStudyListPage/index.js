@@ -19,7 +19,6 @@ import { loadStudies, loadTotalStudiesCount } from './actions';
 import Backdrop from '../../components/Backdrop';
 import ErrorAlert from '../../components/ErrorAlert';
 import ObjectsTable from '../../components/ObjectsTable';
-import ObjectsTableOld from '../../components/ObjectsTable/old';
 import Study from '../../utils/dicom/parser/study';
 import { routes } from '../../utils/history';
 import { key } from './key';
@@ -52,16 +51,18 @@ export function DashboardStudyListPage({
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Paper sx={{ mt: 2 }}>
+              {/* <ObjectsTable */}
+              {/*   injectSaga={{ key, saga }} */}
+              {/*   objectType={Study} */}
+              {/*   objects={studies} */}
+              {/*   objectsCount={studiesCount} */}
+              {/*   dispatchLoadObjects={dispatchLoadStudies} */}
+              {/*   dispatchLoadTotalObjectsCount={dispatchLoadTotalStudiesCount} */}
+              {/*   onObjectClick={onStudyClick} */}
+              {/* /> */}
+            </Paper>
+            <Paper sx={{ mt: 2 }}>
               <ObjectsTable
-                injectSaga={{ key, saga }}
-                objectType={Study}
-                objects={studies}
-                objectsCount={studiesCount}
-                dispatchLoadObjects={dispatchLoadStudies}
-                dispatchLoadTotalObjectsCount={dispatchLoadTotalStudiesCount}
-                onObjectClick={onStudyClick}
-              />
-              <ObjectsTableOld
                 injectSaga={{ key, saga }}
                 objectType={Study}
                 objects={studies}

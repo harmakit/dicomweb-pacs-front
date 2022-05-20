@@ -29,7 +29,6 @@ import Instance from '../../utils/dicom/parser/instance';
 import { key } from './key';
 import { routes } from '../../utils/history';
 import DicomObjectInfo from '../../components/DicomObjectInfo';
-import ObjectsTableOld from '../../components/ObjectsTable/old';
 
 export function DashboardSeriesPage({
   seriesObject,
@@ -89,20 +88,6 @@ export function DashboardSeriesPage({
             <Paper sx={{ mt: 2 }}>
               {seriesObject && (
                 <ObjectsTable
-                  injectSaga={{ key, saga }}
-                  objectType={Instance}
-                  objects={instances}
-                  objectsCount={instancesCount}
-                  dispatchLoadObjects={dispatchLoadInstances}
-                  dispatchLoadObjectsInitialPayload={loadInstancesPayload}
-                  dispatchLoadTotalObjectsCount={
-                    dispatchLoadTotalInstancesCount
-                  }
-                  onObjectClick={onInstanceClick}
-                />
-              )}
-              {seriesObject && (
-                <ObjectsTableOld
                   injectSaga={{ key, saga }}
                   objectType={Instance}
                   objects={instances}
