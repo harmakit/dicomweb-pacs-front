@@ -13,11 +13,13 @@ import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PreviewIcon from '@mui/icons-material/Preview';
 import { generatePath } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 import { routes } from '../../utils/history';
 import Study from '../../utils/dicom/parser/study';
 import Series from '../../utils/dicom/parser/series';
 import Instance from '../../utils/dicom/parser/instance';
 import DicomObjectWithIdAbstract from '../../utils/dicom/parser/objectWithId';
+import messages from './messages';
 
 export default function DicomObjectInfo({ object }) {
   const [expanded, setExpanded] = React.useState(false);
@@ -77,7 +79,7 @@ export default function DicomObjectInfo({ object }) {
           </Grid>
           <Grid item xs={2} container justifyContent="flex-end">
             <Grid item>
-              <Tooltip title="View image">
+              <Tooltip title={<FormattedMessage {...messages.viewImage} />}>
                 <IconButton onClick={handlePreviewClick}>
                   <PreviewIcon />
                 </IconButton>

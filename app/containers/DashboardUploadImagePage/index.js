@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { styled } from '@mui/material/styles';
 import { v4 as uuidv4 } from 'uuid';
+import { FormattedMessage } from 'react-intl';
 import { useInjectReducer } from '../../utils/injectReducer';
 import { useInjectSaga } from '../../utils/injectSaga';
 import reducer from './reducer';
@@ -32,6 +33,7 @@ import { key } from './key';
 import STOWResponse, {
   FIELD_RETRIEVE_URL,
 } from '../../utils/dicom/parser/stowResponse';
+import messages from './messages';
 
 const Input = styled('input')({
   display: 'none',
@@ -95,9 +97,11 @@ export function DashboardViewImagesPage({
               <Paper sx={{ p: 1, overflow: 'auto', maxHeight: 200 }}>
                 {showResult && (
                   <Alert severity={successfulUpload ? 'success' : 'error'}>
-                    {successfulUpload
-                      ? 'Successfully uploaded'
-                      : 'Failed to upload'}
+                    {successfulUpload ? (
+                      <FormattedMessage {...messages.alert.success} />
+                    ) : (
+                      <FormattedMessage {...messages.alert.error} />
+                    )}
                   </Alert>
                 )}
                 <Typography variant="h6">Selected files:</Typography>
@@ -109,6 +113,7 @@ export function DashboardViewImagesPage({
                   ))}
                 </List>
               </Paper>
+              }
             </Grid>
           )}
           {showUploadButton && (

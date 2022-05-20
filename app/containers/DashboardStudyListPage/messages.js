@@ -7,9 +7,4 @@ import { defineMessages } from 'react-intl';
 
 export const scope = 'app.containers.DashboardStudiesPage';
 
-export default defineMessages({
-  header: {
-    id: `${scope}.header`,
-    defaultMessage: 'Studies!',
-  },
-});
+export default defineMessages({});

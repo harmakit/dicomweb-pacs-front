@@ -1,10 +1,17 @@
-import {defineMessages} from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 export const scope = 'app.containers.DashboardUploadImagePage';
 
 export default defineMessages({
-  header: {
-    id: `${scope}.header`,
-    defaultMessage: 'Upload images!',
+  alert: {
+    success: {
+      id: `${scope}.alert.success`,
+    },
+    error: {
+      id: `${scope}.alert.error`,
+    },
+    selectedFiles: {
+      id: `${scope}.selectedFiles`,
+    },
   },
 });

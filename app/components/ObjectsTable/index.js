@@ -13,6 +13,7 @@ import {
 import PropTypes from 'prop-types';
 import { merge, noop } from 'lodash';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import { FormattedMessage } from 'react-intl';
 import Study, {
   FIELD_ACCESSION_NUMBER,
   FIELD_MODALITIES_IN_STUDY,
@@ -43,6 +44,7 @@ import Instance, {
 } from '../../utils/dicom/parser/instance';
 import DicomObjectWithIdAbstract from '../../utils/dicom/parser/objectWithId';
 import FilterDialog from './FilterDialog';
+import messages from './messages';
 
 export const PAGINATION_DEFAULT_PAGE = 0;
 export const PAGINATION_ROWS_PER_PAGE_OPTIONS = [5, 10, 25, 100];
@@ -53,70 +55,182 @@ function getColumns(objectType) {
   switch (objectType) {
     case Study:
       return [
-        { id: FIELD_STUDY_DATE, label: 'Study Date', minWidth: '10%' },
-        { id: FIELD_STUDY_TIME, label: 'Study Time', minWidth: '10%' },
+        {
+          id: FIELD_STUDY_DATE,
+          label: (
+            <FormattedMessage {...messages.columns.study[FIELD_STUDY_DATE]} />
+          ),
+          minWidth: '10%',
+        },
+        {
+          id: FIELD_STUDY_TIME,
+          label: (
+            <FormattedMessage {...messages.columns.study[FIELD_STUDY_TIME]} />
+          ),
+          minWidth: '10%',
+        },
         {
           id: FIELD_ACCESSION_NUMBER,
-          label: 'Accession Number',
+          label: (
+            <FormattedMessage
+              {...messages.columns.study[FIELD_ACCESSION_NUMBER]}
+            />
+          ),
           minWidth: '10%',
         },
-        { id: FIELD_MODALITIES_IN_STUDY, label: 'Modalities', minWidth: '10%' },
+        {
+          id: FIELD_MODALITIES_IN_STUDY,
+          label: (
+            <FormattedMessage
+              {...messages.columns.study[FIELD_MODALITIES_IN_STUDY]}
+            />
+          ),
+          minWidth: '10%',
+        },
         {
           id: FIELD_REFERRING_PHYSICIAN_NAME,
-          label: 'Physician name',
+          label: (
+            <FormattedMessage
+              {...messages.columns.study[FIELD_REFERRING_PHYSICIAN_NAME]}
+            />
+          ),
           minWidth: '10%',
         },
-        { id: FIELD_PATIENT_NAME, label: 'Patient name', minWidth: '10%' },
-        { id: FIELD_PATIENT_ID, label: 'Patient ID', minWidth: '10%' },
-        { id: FIELD_STUDY_INSTANCE_UID, label: 'Study UID', minWidth: '15%' },
-        { id: FIELD_STUDY_ID, label: 'Study ID', minWidth: '10%' },
+        {
+          id: FIELD_PATIENT_NAME,
+          label: (
+            <FormattedMessage {...messages.columns.study[FIELD_PATIENT_NAME]} />
+          ),
+          minWidth: '10%',
+        },
+        {
+          id: FIELD_PATIENT_ID,
+          label: (
+            <FormattedMessage {...messages.columns.study[FIELD_PATIENT_ID]} />
+          ),
+          minWidth: '10%',
+        },
+        {
+          id: FIELD_STUDY_INSTANCE_UID,
+          label: (
+            <FormattedMessage
+              {...messages.columns.study[FIELD_STUDY_INSTANCE_UID]}
+            />
+          ),
+          minWidth: '15%',
+        },
+        {
+          id: FIELD_STUDY_ID,
+          label: (
+            <FormattedMessage {...messages.columns.study[FIELD_STUDY_ID]} />
+          ),
+          minWidth: '10%',
+        },
       ];
     case Series:
       return [
-        { id: FIELD_MODALITY, label: 'Modality', minWidth: '10%' },
+        {
+          id: FIELD_MODALITY,
+          label: (
+            <FormattedMessage {...messages.columns.series[FIELD_MODALITY]} />
+          ),
+          minWidth: '10%',
+        },
         {
           id: FIELD_SERIES_INSTANCE_UID,
-          label: 'Series Instance UID',
+          label: (
+            <FormattedMessage
+              {...messages.columns.series[FIELD_SERIES_INSTANCE_UID]}
+            />
+          ),
           minWidth: '15%',
         },
-        { id: FIELD_SERIES_NUMBER, label: 'Series Number', minWidth: '10%' },
+        {
+          id: FIELD_SERIES_NUMBER,
+          label: (
+            <FormattedMessage
+              {...messages.columns.series[FIELD_SERIES_NUMBER]}
+            />
+          ),
+          minWidth: '10%',
+        },
         {
           id: FIELD_PERFORMED_PROCEDURE_STEP_START_DATE,
-          label: 'Performed Procedure Step Start Date',
+          label: (
+            <FormattedMessage
+              {...messages.columns.series[
+                FIELD_PERFORMED_PROCEDURE_STEP_START_DATE
+              ]}
+            />
+          ),
           minWidth: '10%',
         },
         {
           id: FIELD_PERFORMED_PROCEDURE_STEP_START_TIME,
-          label: 'Performed Procedure Step Start Time',
+          label: (
+            <FormattedMessage
+              {...messages.columns.series[
+                FIELD_PERFORMED_PROCEDURE_STEP_START_TIME
+              ]}
+            />
+          ),
           minWidth: '10%',
         },
         {
           id: FIELD_REQUEST_ATTRIBUTES_SEQUENCE,
-          label: 'Request Attributes Sequence',
+          label: (
+            <FormattedMessage
+              {...messages.columns.series[FIELD_REQUEST_ATTRIBUTES_SEQUENCE]}
+            />
+          ),
           minWidth: '10%',
         },
         {
           id: FIELD_SCHEDULED_PROCEDURE_STEP_ID,
-          label: 'Scheduled Procedure Step ID',
+          label: (
+            <FormattedMessage
+              {...messages.columns.series[FIELD_SCHEDULED_PROCEDURE_STEP_ID]}
+            />
+          ),
           minWidth: '10%',
         },
         {
           id: FIELD_REQUESTED_PROCEDURE_ID,
-          label: 'Requested Procedure ID',
+          label: (
+            <FormattedMessage
+              {...messages.columns.series[FIELD_REQUESTED_PROCEDURE_ID]}
+            />
+          ),
           minWidth: '10%',
         },
       ];
     case Instance:
       return [
-        { id: FIELD_SOP_CLASS_UID, label: 'SOP Class UID', minWidth: '10%' },
+        {
+          id: FIELD_SOP_CLASS_UID,
+          label: (
+            <FormattedMessage
+              {...messages.columns.instance[FIELD_SOP_CLASS_UID]}
+            />
+          ),
+          minWidth: '10%',
+        },
         {
           id: FIELD_SOP_INSTANCE_UID,
-          label: 'SOP Instance UID',
+          label: (
+            <FormattedMessage
+              {...messages.columns.instance[FIELD_SOP_INSTANCE_UID]}
+            />
+          ),
           minWidth: '10%',
         },
         {
           id: FIELD_INSTANCE_NUMBER,
-          label: 'Instance Number',
+          label: (
+            <FormattedMessage
+              {...messages.columns.instance[FIELD_INSTANCE_NUMBER]}
+            />
+          ),
           minWidth: '10%',
         },
       ];

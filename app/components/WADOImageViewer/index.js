@@ -94,8 +94,4 @@ ImageViewer.propTypes = {
   urls: PropTypes.arrayOf(PropTypes.string),
 };
 
-// imageIds example:
-//   'wadouri:http://localhost:8042/wado?objectUID=1.3.6.1.4.1.5962.99.1.1647423216.1757746261.1397511827184.202.0&studyUID=1.3.6.1.4.1.5962.99.1.1647423216.1757746261.1397511827184.6.0&seriesUID=1.3.6.1.4.1.5962.99.1.1647423216.1757746261.1397511827184.203.0&requestType=WADO&contentType=application%2Fdicom',
-//   'wadouri:http://localhost:8042/wado?objectUID=1.3.6.1.4.1.5962.99.1.1647423216.1757746261.1397511827184.204.0&studyUID=1.3.6.1.4.1.5962.99.1.1647423216.1757746261.1397511827184.6.0&seriesUID=1.3.6.1.4.1.5962.99.1.1647423216.1757746261.1397511827184.203.0&requestType=WADO&contentType=application%2Fdicom',
-
 export default ImageViewer;

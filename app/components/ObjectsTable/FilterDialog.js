@@ -7,6 +7,8 @@ import {
   TextField,
 } from '@mui/material';
 import React, { useEffect } from 'react';
+import { FormattedMessage } from 'react-intl';
+import messages from './messages';
 
 export default function FilterDialog({ open, column, onClose, onSave, value }) {
   const columnLabel = column?.label;
@@ -26,20 +28,29 @@ export default function FilterDialog({ open, column, onClose, onSave, value }) {
   };
 
   return (
-    <Dialog onClose={onClose} open={open}>
+    <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
       <DialogContent>
         <TextField
           autoFocus
           margin="dense"
-          label={`Filter ${columnLabel} by:`}
+          label={
+            <FormattedMessage
+              {...messages.FilterDialog.filterBy}
+              values={{ columnLabel }}
+            />
+          }
           value={filterValue}
           onChange={e => setFilterValue(e.target.value)}
           fullWidth
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleSave}>Save</Button>
+        <Button onClick={handleClose}>
+          <FormattedMessage {...messages.FilterDialog.cancel} />
+        </Button>
+        <Button onClick={handleSave}>
+          <FormattedMessage {...messages.FilterDialog.save} />
+        </Button>
       </DialogActions>
     </Dialog>
   );

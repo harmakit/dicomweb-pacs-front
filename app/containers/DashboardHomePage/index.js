@@ -1,14 +1,14 @@
 import React, { memo } from 'react';
-// import PropTypes from 'prop-types';
 import { Grid, Paper } from '@mui/material';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-// import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 import { useInjectReducer } from '../../utils/injectReducer';
 import reducer from './reducer';
 import { routes } from '../../utils/history';
+import messages from './messages';
 
 const key = 'dashboardHome';
 
@@ -19,21 +19,23 @@ function DashboardHomePage() {
     <Grid container spacing={2} textAlign="center">
       <Grid item container xs={12}>
         <Paper sx={{ p: 3, width: '100%' }}>
-          <Link to={routes.studyList}>Go to studies</Link>
+          <Link to={routes.studyList}>
+            <FormattedMessage {...messages.openStudies} />
+          </Link>
         </Paper>
       </Grid>
       <Grid item container xs={12}>
         <Paper sx={{ p: 3, width: '100%' }}>
-          <Link to={routes.upload}>Upload DICOM file</Link>
+          <Link to={routes.upload}>
+            <FormattedMessage {...messages.openUpload} />
+          </Link>
         </Paper>
       </Grid>
     </Grid>
   );
 }
 
-DashboardHomePage.propTypes = {
-  // children: PropTypes.element,
-};
+DashboardHomePage.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({});
 

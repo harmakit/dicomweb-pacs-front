@@ -51,17 +51,6 @@ export function DashboardStudyListPage({
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Paper sx={{ mt: 2 }}>
-              {/* <ObjectsTable */}
-              {/*   injectSaga={{ key, saga }} */}
-              {/*   objectType={Study} */}
-              {/*   objects={studies} */}
-              {/*   objectsCount={studiesCount} */}
-              {/*   dispatchLoadObjects={dispatchLoadStudies} */}
-              {/*   dispatchLoadTotalObjectsCount={dispatchLoadTotalStudiesCount} */}
-              {/*   onObjectClick={onStudyClick} */}
-              {/* /> */}
-            </Paper>
-            <Paper sx={{ mt: 2 }}>
               <ObjectsTable
                 injectSaga={{ key, saga }}
                 objectType={Study}

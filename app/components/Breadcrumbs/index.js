@@ -1,8 +1,10 @@
 import React from 'react';
-import {Link, matchPath, useLocation} from 'react-router-dom';
+import { Link, matchPath, useLocation } from 'react-router-dom';
 import TreeModel from 'tree-model';
-import {Breadcrumbs as MUIBreadcrumbs, Typography} from '@mui/material';
-import {routes} from '../../utils/history';
+import { Breadcrumbs as MUIBreadcrumbs, Typography } from '@mui/material';
+import { FormattedMessage } from 'react-intl';
+import { routes } from '../../utils/history';
+import messages from './messages';
 
 const tree = new TreeModel();
 const root = tree.parse({
@@ -65,13 +67,13 @@ export default function Breadcrumbs() {
   const getBreadcrumbHistoryItemName = breadcrumbHistoryItem => {
     switch (breadcrumbHistoryItem.path) {
       case routes.studyList:
-        return 'Studies';
+        return <FormattedMessage {...messages.studies} />;
       case routes.study:
-        return 'Study';
+        return <FormattedMessage {...messages.study} />;
       case routes.series:
-        return 'Series';
+        return <FormattedMessage {...messages.series} />;
       case routes.instance:
-        return 'Instance';
+        return <FormattedMessage {...messages.instance} />;
       default:
         return '';
     }

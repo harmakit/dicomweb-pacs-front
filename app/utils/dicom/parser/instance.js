@@ -2,9 +2,9 @@ import Series from './series';
 import Study from './study';
 import DicomObjectWithIdAbstract from './objectWithId';
 
-const FIELD_SOP_CLASS_UID = 'SOP Class UID';
-const FIELD_SOP_INSTANCE_UID = 'SOP Instance UID';
-const FIELD_INSTANCE_NUMBER = 'Instance Number';
+const FIELD_SOP_CLASS_UID = 'SOPClassUID';
+const FIELD_SOP_INSTANCE_UID = 'SOPInstanceUID';
+const FIELD_INSTANCE_NUMBER = 'instanceNumber';
 
 class Instance extends DicomObjectWithIdAbstract {
   constructor(data) {
