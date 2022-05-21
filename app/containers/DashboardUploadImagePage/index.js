@@ -113,7 +113,6 @@ export function DashboardViewImagesPage({
                   ))}
                 </List>
               </Paper>
-              }
             </Grid>
           )}
           {showUploadButton && (
