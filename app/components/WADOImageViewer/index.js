@@ -7,6 +7,7 @@ import cornerstoneMath from 'cornerstone-math';
 import cornerstoneTools from 'cornerstone-tools';
 import dicomParser from 'dicom-parser';
 import Hammer from 'hammerjs';
+import config from '../../params';
 
 function initCornerstone() {
   // Cornerstone Tools
@@ -23,9 +24,14 @@ function initCornerstone() {
   cornerstoneTools.store.state.touchProximity = 40;
 
   // IMAGE LOADER
+  const assetPath = `${config.hostAddress}/static`;
   cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
   cornerstoneWADOImageLoader.external.dicomParser = dicomParser;
   cornerstoneWADOImageLoader.webWorkerManager.initialize({
+    webWorkerTaskPaths: [
+      `${assetPath}/610.bundle.min.worker.js`,
+      `${assetPath}/888.bundle.min.worker.js`,
+    ],
     maxWebWorkers: navigator.hardwareConcurrency || 1,
     startWebWorkersOnDemand: true,
     taskConfiguration: {
