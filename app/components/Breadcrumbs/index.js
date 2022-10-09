@@ -14,10 +14,10 @@ const root = tree.parse({
       name: routes.studyList,
       children: [
         {
-          name: routes.study,
+          name: routes.seriesList,
           children: [
             {
-              name: routes.series,
+              name: routes.instanceList,
               children: [
                 {
                   name: routes.instance,
@@ -68,9 +68,9 @@ export default function Breadcrumbs() {
     switch (breadcrumbHistoryItem.path) {
       case routes.studyList:
         return <FormattedMessage {...messages.studies} />;
-      case routes.study:
+      case routes.seriesList:
         return <FormattedMessage {...messages.study} />;
-      case routes.series:
+      case routes.instanceList:
         return <FormattedMessage {...messages.series} />;
       case routes.instance:
         return <FormattedMessage {...messages.instance} />;

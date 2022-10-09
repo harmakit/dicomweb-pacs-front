@@ -1,5 +1,5 @@
 const params = {
-  wadoURL: 'http://localhost:8042/dicom-web',
+  wadoURL: 'http://localhost:3000/dicomweb',
   hostAddress: `${window.location.protocol}//${window.location.host}`,
 };
 

@@ -29,6 +29,7 @@ import Instance from '../../utils/dicom/parser/instance';
 import { key } from './key';
 import { routes } from '../../utils/history';
 import DicomObjectInfo from '../../components/DicomObjectInfo';
+import Study from '../../utils/dicom/parser/study';
 
 export function DashboardSeriesPage({
   seriesObject,
@@ -67,9 +68,10 @@ export function DashboardSeriesPage({
   const loadInstancesPayload = { queryParams: {} };
 
   if (objectFromParamsLoaded) {
-    loadInstancesPayload.queryParams[
-      Series.getFieldAttribute(Series.getObjectIdField())
-    ] = seriesObject[Series.getObjectIdField()];
+    loadInstancesPayload[Study.getObjectIdField()] =
+      seriesObject[Study.getObjectIdField()];
+    loadInstancesPayload[Series.getObjectIdField()] =
+      seriesObject[Series.getObjectIdField()];
   }
 
   if (wrongObjectLoaded) {

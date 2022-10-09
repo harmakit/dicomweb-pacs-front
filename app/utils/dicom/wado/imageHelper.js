@@ -12,7 +12,7 @@ class ImageHelper {
     const studyId = instance[Study.getObjectIdField()];
     const seriesId = instance[Series.getObjectIdField()];
 
-    return `wadouri:http://localhost:8042/wado?objectUID=${instanceId}&studyUID=${studyId}&seriesUID=${seriesId}&requestType=WADO&contentType=application%2Fdicom`;
+    return `wadouri:http://localhost:3000/dicomweb/wado-uri?objectUID=${instanceId}&studyUID=${studyId}&seriesUID=${seriesId}&requestType=WADO&contentType=application%2Fdicom`;
   }
 }
 

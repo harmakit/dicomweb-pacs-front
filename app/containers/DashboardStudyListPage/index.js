@@ -36,7 +36,7 @@ export function DashboardStudyListPage({
   const history = useHistory();
 
   const onStudyClick = studyUID => {
-    const path = generatePath(routes.study, {
+    const path = generatePath(routes.seriesList, {
       studyId: studyUID,
     });
     history.push(path);

@@ -26,7 +26,7 @@ import { routes } from '../../utils/history';
 import { key } from './key';
 import DicomObjectInfo from '../../components/DicomObjectInfo';
 
-export function DashboardStudyPage({
+export function DashboardSeriesListPage({
   studyObject,
   loading,
   errors,
@@ -48,7 +48,7 @@ export function DashboardStudyPage({
     studyObject && studyId === studyObject[Study.getObjectIdField()];
 
   const onSeriesClick = seriesUID => {
-    const path = generatePath(routes.series, {
+    const path = generatePath(routes.instanceList, {
       studyId,
       seriesId: seriesUID,
     });
@@ -62,9 +62,8 @@ export function DashboardStudyPage({
   const loadSeriesPayload = { queryParams: {} };
 
   if (objectFromParamsLoaded) {
-    loadSeriesPayload.queryParams[
-      Study.getFieldAttribute(Study.getObjectIdField())
-    ] = studyObject[Study.getObjectIdField()];
+    loadSeriesPayload[Study.getObjectIdField()] =
+      studyObject[Study.getObjectIdField()];
   }
 
   if (wrongObjectLoaded) {
@@ -101,7 +100,7 @@ export function DashboardStudyPage({
   );
 }
 
-DashboardStudyPage.propTypes = {
+DashboardSeriesListPage.propTypes = {
   studyObject: PropTypes.instanceOf(Study),
   loading: PropTypes.bool.isRequired,
   errors: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -137,4 +136,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(DashboardStudyPage);
+)(DashboardSeriesListPage);

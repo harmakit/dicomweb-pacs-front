@@ -1,11 +1,11 @@
 import React from 'react';
-import {Route, Switch} from 'react-router-dom';
-import {routes} from '../../utils/history';
+import { Route, Switch } from 'react-router-dom';
+import { routes } from '../../utils/history';
 import NotFoundPage from '../NotFoundPage/Loadable';
 import DashboardPage from '../DashboardPage/Loadable';
 import DashboardStudyListPage from '../DashboardStudyListPage/Loadable';
-import DashboardStudyPage from '../DashboardStudyPage/Loadable';
-import DashboardSeriesPage from '../DashboardSeriesPage/Loadable';
+import DashboardSeriesListPage from '../DashboardSeriesListPage/Loadable';
+import DashboardInstanceListPage from '../DashboardInstanceListPage/Loadable';
 import DashboardInstancePage from '../DashboardInstancePage/Loadable';
 import DashboardViewImagesPage from '../DashboardViewImagesPage/Loadable';
 import DashboardHomePage from '../DashboardHomePage/Loadable';
@@ -35,19 +35,19 @@ export default function App() {
         />
         <Route
           exact
-          path={routes.study}
+          path={routes.seriesList}
           render={() => (
             <DashboardPage>
-              <DashboardStudyPage />
+              <DashboardSeriesListPage />
             </DashboardPage>
           )}
         />
         <Route
           exact
-          path={routes.series}
+          path={routes.instanceList}
           render={() => (
             <DashboardPage>
-              <DashboardSeriesPage />
+              <DashboardInstanceListPage />
             </DashboardPage>
           )}
         />
