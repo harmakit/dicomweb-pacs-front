@@ -17,7 +17,7 @@ export const initialState = {
 };
 
 /* eslint-disable default-case, no-param-reassign */
-const dashboardUploadImageReducer = (state = initialState, action) =>
+const dashboardUploadFileReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
       case SELECT_FILES:
@@ -42,4 +42,4 @@ const dashboardUploadImageReducer = (state = initialState, action) =>
     }
   });
 
-export default dashboardUploadImageReducer;
+export default dashboardUploadFileReducer;

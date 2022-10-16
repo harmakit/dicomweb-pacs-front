@@ -2,29 +2,29 @@ import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 import { key } from './key';
 
-const selectDashboardUploadImages = state => state[key] || initialState;
+const selectDashboardUploadFile = state => state[key] || initialState;
 
 const makeSelectLoading = () =>
   createSelector(
-    selectDashboardUploadImages,
+    selectDashboardUploadFile,
     state => state.objectsUploading,
   );
 
 const makeSelectResponse = () =>
   createSelector(
-    selectDashboardUploadImages,
+    selectDashboardUploadFile,
     state => state.objectsUploadingResponse,
   );
 
 const makeSelectFiles = () =>
   createSelector(
-    selectDashboardUploadImages,
+    selectDashboardUploadFile,
     state => state.files,
   );
 
 const makeSelectErrors = () =>
   createSelector(
-    selectDashboardUploadImages,
+    selectDashboardUploadFile,
     state => {
       const errors = [];
       if (state.objectsUploadingError) {
@@ -35,7 +35,7 @@ const makeSelectErrors = () =>
   );
 
 export {
-  selectDashboardUploadImages,
+  selectDashboardUploadFile,
   makeSelectLoading,
   makeSelectErrors,
   makeSelectResponse,

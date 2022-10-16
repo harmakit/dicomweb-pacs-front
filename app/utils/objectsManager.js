@@ -5,7 +5,6 @@ import Study from './dicom/parser/study';
 import Series from './dicom/parser/series';
 import Instance from './dicom/parser/instance';
 import config from '../params';
-import STOWResponse from './dicom/parser/stowResponse';
 
 const client = new DICOMwebClient({
   url: config.wadoURL,
@@ -98,9 +97,7 @@ class ObjectsManager {
   uploadObjects(arrayBuffers) {
     return client
       .storeInstances({ datasets: arrayBuffers })
-      .then(response =>
-        parser.parse(STOWResponse, JSON.parse(String(response))),
-      );
+      .then(response => JSON.parse(String(response)));
   }
 }
 

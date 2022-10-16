@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-export const scope = 'app.containers.DashboardUploadImagePage';
+export const scope = 'app.containers.DashboardUploadFilePage';
 
 export default defineMessages({
   alert: {

@@ -30,16 +30,13 @@ import { selectFiles, uploadObjects } from './actions';
 import Backdrop from '../../components/Backdrop';
 import ErrorAlert from '../../components/ErrorAlert';
 import { key } from './key';
-import STOWResponse, {
-  FIELD_RETRIEVE_URL,
-} from '../../utils/dicom/parser/stowResponse';
 import messages from './messages';
 
 const Input = styled('input')({
   display: 'none',
 });
 
-export function DashboardViewImagesPage({
+export function DashboardUploadFilePage({
   loading,
   errors,
   dispatchUploadObjects,
@@ -68,7 +65,6 @@ export function DashboardViewImagesPage({
   const showUploadButton = files.length > 0;
 
   const showResult = !loading && response;
-  const successfulUpload = showResult && response[FIELD_RETRIEVE_URL];
 
   return (
     <div>
@@ -95,20 +91,20 @@ export function DashboardViewImagesPage({
           {showUploadButton && (
             <Grid item xs={12}>
               <Paper sx={{ p: 1, overflow: 'auto', maxHeight: 200 }}>
-                {showResult && (
-                  <Alert severity={successfulUpload ? 'success' : 'error'}>
-                    {successfulUpload ? (
-                      <FormattedMessage {...messages.alert.success} />
-                    ) : (
-                      <FormattedMessage {...messages.alert.error} />
-                    )}
-                  </Alert>
-                )}
                 <Typography variant="h6">Selected files:</Typography>
                 <List dense>
-                  {files.map(file => (
+                  {files.map((file, i) => (
                     <ListItem key={file.name}>
                       <ListItemText primary={file.name} />
+                      {showResult && (
+                        <Alert severity={response[i] ? 'success' : 'error'}>
+                          {response[i] ? (
+                            <FormattedMessage {...messages.alert.success} />
+                          ) : (
+                            <FormattedMessage {...messages.alert.error} />
+                          )}
+                        </Alert>
+                      )}
                     </ListItem>
                   ))}
                 </List>
@@ -132,11 +128,11 @@ export function DashboardViewImagesPage({
   );
 }
 
-DashboardViewImagesPage.propTypes = {
+DashboardUploadFilePage.propTypes = {
   loading: PropTypes.bool.isRequired,
   errors: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatchUploadObjects: PropTypes.func.isRequired,
-  response: PropTypes.instanceOf(STOWResponse),
+  response: PropTypes.arrayOf(Boolean),
   files: PropTypes.arrayOf(PropTypes.instanceOf(File)).isRequired,
   dispatchSelectFiles: PropTypes.func.isRequired,
 };
@@ -164,4 +160,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(DashboardViewImagesPage);
+)(DashboardUploadFilePage);

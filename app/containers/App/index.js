@@ -9,7 +9,7 @@ import DashboardInstanceListPage from '../DashboardInstanceListPage/Loadable';
 import DashboardInstancePage from '../DashboardInstancePage/Loadable';
 import DashboardViewImagesPage from '../DashboardViewImagesPage/Loadable';
 import DashboardHomePage from '../DashboardHomePage/Loadable';
-import DashboardUploadImagePage from '../DashboardUploadImagePage/Loadable';
+import DashboardUploadFilePage from '../DashboardUploadFilePage/Loadable';
 
 export default function App() {
   return (
@@ -74,7 +74,7 @@ export default function App() {
           path={routes.upload}
           render={() => (
             <DashboardPage>
-              <DashboardUploadImagePage />
+              <DashboardUploadFilePage />
             </DashboardPage>
           )}
         />
