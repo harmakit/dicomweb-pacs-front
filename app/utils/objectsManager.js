@@ -7,7 +7,7 @@ import Instance from './dicom/parser/instance';
 import config from '../params';
 
 const client = new DICOMwebClient({
-  url: config.wadoURL,
+  url: `${config.backendUrl}/dicomweb`,
 });
 
 class ObjectsManager {

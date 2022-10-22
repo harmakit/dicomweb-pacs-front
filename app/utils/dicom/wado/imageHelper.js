@@ -1,6 +1,7 @@
 import Instance from '../parser/instance';
 import Study from '../parser/study';
 import Series from '../parser/series';
+import params from '../../../params';
 
 class ImageHelper {
   /**
@@ -12,7 +13,9 @@ class ImageHelper {
     const studyId = instance[Study.getObjectIdField()];
     const seriesId = instance[Series.getObjectIdField()];
 
-    return `wadouri:http://localhost:3000/dicomweb/wado-uri?objectUID=${instanceId}&studyUID=${studyId}&seriesUID=${seriesId}&requestType=WADO&contentType=application%2Fdicom`;
+    return `wadouri:${
+      params.backendUrl
+    }/dicomweb/wado-uri?objectUID=${instanceId}&studyUID=${studyId}&seriesUID=${seriesId}&requestType=WADO&contentType=application%2Fdicom`;
   }
 }
 
