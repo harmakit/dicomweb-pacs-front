@@ -9,6 +9,8 @@ FROM node:10.13-alpine as build
 WORKDIR /app
 COPY ./package*.json ./
 COPY . .
+RUN apk add --no-cache autoconf automake libtool nasm build-base
+RUN npm install
 RUN npm run build
 
 # multistage build...
