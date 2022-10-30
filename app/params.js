@@ -1,6 +1,7 @@
+const host = `${window.location.protocol}//${window.location.host}`;
 const params = {
-  backendUrl: 'http://localhost:3000',
-  hostAddress: `${window.location.protocol}//${window.location.host}`,
+  backendUrl: `${host}/api`,
+  hostAddress: host,
 };
 
 export default params;
