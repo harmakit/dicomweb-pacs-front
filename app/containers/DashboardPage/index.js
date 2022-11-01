@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import {
   AppBar,
-  Badge,
   Box,
   Container,
   Drawer,
@@ -14,7 +13,6 @@ import {
   Typography,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import UploadIcon from '@mui/icons-material/Upload';
 import HomeIcon from '@mui/icons-material/Home';
@@ -65,11 +63,6 @@ function DashboardPage({
           <Typography component="h1" variant="h6" noWrap sx={{ flexGrow: 1 }}>
             <FormattedMessage {...messages.header} />
           </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={0} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
         </Toolbar>
       </AppBar>
 
