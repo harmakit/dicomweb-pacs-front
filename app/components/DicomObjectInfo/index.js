@@ -65,13 +65,26 @@ export default function DicomObjectInfo({ object }) {
     window.open(viewPath, '_blank');
   };
 
+  const getObjectName = () => {
+    switch (object.constructor) {
+      case Study:
+        return 'Study';
+      case Series:
+        return 'Series';
+      case Instance:
+        return 'Instance';
+      default:
+        return '';
+    }
+  };
+
   return (
     <Accordion expanded={expanded} onChange={handleAccordionToggle}>
       <AccordionSummary>
         <Grid container justifyContent="space-between">
           <Grid xs={10} item>
             <Typography variant="h6" component="h6">
-              {object.constructor.name}{' '}
+              {getObjectName()}{' '}
               <span style={{ color: 'grey' }}>
                 ({object[object.constructor.getObjectIdField()]})
               </span>
