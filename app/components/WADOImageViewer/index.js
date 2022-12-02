@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import CornerstoneViewport from 'react-cornerstone-viewport';
 import cornerstone from 'cornerstone-core';
@@ -7,7 +7,15 @@ import cornerstoneMath from 'cornerstone-math';
 import cornerstoneTools from 'cornerstone-tools';
 import dicomParser from 'dicom-parser';
 import Hammer from 'hammerjs';
+import { Button, Grid } from '@mui/material';
 import config from '../../params';
+import {
+  eraserCursor,
+  freehandRoiCursor,
+  wwwcCursor,
+  wwwcRegionCursor,
+  zoomCursor,
+} from './tools';
 
 function initCornerstone() {
   // Cornerstone Tools
@@ -44,36 +52,45 @@ function initCornerstone() {
   });
 }
 
-function getTools() {
+function getDefaultTools() {
   return [
-    // Mouse
+    cornerstoneTools.StackScrollMouseWheelTool,
+    cornerstoneTools.PanMultiTouchTool,
+    cornerstoneTools.ZoomTouchPinchTool,
+    cornerstoneTools.StackScrollMultiTouchTool,
+  ];
+}
+
+function getMouseTools() {
+  return [
     {
-      name: 'Wwwc',
-      mode: 'active',
-      modeOptions: { mouseButtonMask: 1 },
+      class: cornerstoneTools.WwwcTool,
+      icon: wwwcCursor,
     },
     {
-      name: 'Zoom',
-      mode: 'active',
-      modeOptions: { mouseButtonMask: 2 },
+      class: cornerstoneTools.WwwcRegionTool,
+      icon: wwwcRegionCursor,
     },
     {
-      name: 'Pan',
-      mode: 'active',
-      modeOptions: { mouseButtonMask: 4 },
+      class: cornerstoneTools.ZoomTool,
+      icon: zoomCursor,
     },
-    // Scroll
-    { name: 'StackScrollMouseWheel', mode: 'active' },
-    // Touch
-    { name: 'PanMultiTouch', mode: 'active' },
-    { name: 'ZoomTouchPinch', mode: 'active' },
-    { name: 'StackScrollMultiTouch', mode: 'active' },
+    {
+      class: cornerstoneTools.FreehandRoiTool,
+      icon: freehandRoiCursor,
+    },
+    {
+      class: cornerstoneTools.EraserTool,
+      icon: eraserCursor,
+    },
   ];
 }
 
 function ImageViewer(props) {
   const { urls } = props;
+  const [element, setElement] = useState(null);
   const [initialized, setInitialized] = useState(false);
+  const [activeTool, setActiveTool] = useState(null);
   const shouldRenderImages = Array.isArray(urls) && urls.length !== 0;
 
   useEffect(() => {
@@ -83,16 +100,102 @@ function ImageViewer(props) {
     }
   }, []);
 
+  // add tools
+  useEffect(() => {
+    if (element) {
+      getMouseTools().forEach(mouseTool => {
+        cornerstoneTools.addToolForElement(element, mouseTool.class);
+      });
+
+      cornerstoneTools.addToolForElement(element, cornerstoneTools.PanTool);
+      cornerstoneTools.setToolActiveForElement(
+        element,
+        new cornerstoneTools.PanTool().name,
+        {
+          mouseButtonMask: 2,
+        },
+      );
+
+      getDefaultTools().forEach(tool => {
+        cornerstoneTools.addToolForElement(element, tool);
+        // eslint-disable-next-line new-cap
+        cornerstoneTools.setToolActiveForElement(element, new tool().name, {});
+      });
+
+      activateTool(getMouseTools()[0]);
+    }
+  }, [element]);
+
+  const handleToolButtonClick = mouseTool => {
+    activateTool(mouseTool);
+  };
+
+  const activateTool = mouseTool => {
+    setActiveTool(mouseTool);
+    cornerstoneTools.setToolActiveForElement(
+      element,
+      // eslint-disable-next-line new-cap
+      new mouseTool.class().name,
+      { mouseButtonMask: 1 },
+    );
+  };
+
+  const toolCursorStyle = useMemo(() => {
+    let style = 'default';
+    if (activeTool) {
+      const blobURL = window.URL.createObjectURL(
+        activeTool.icon.getIconWithPointerSVG(),
+      );
+      style = `url("${blobURL}") 0 0, auto`;
+    }
+    return style;
+  }, [activeTool]);
+
   if (!initialized || !shouldRenderImages) {
     return null;
   }
 
+  const activeButtonStyle = {
+    backgroundColor: '#2f2f2f',
+  };
+
   return (
-    <CornerstoneViewport
-      tools={getTools()}
-      imageIds={urls}
-      style={{ minWidth: '100%', height: '512px', flex: '1' }}
-    />
+    <Grid container>
+      <Grid item xs={12} style={{ backgroundColor: 'black' }}>
+        {getMouseTools().map(mouseTool => (
+          <Button
+            key={mouseTool.class.name}
+            onClick={() => handleToolButtonClick(mouseTool)}
+            style={
+              activeTool && activeTool.class.name === mouseTool.class.name
+                ? activeButtonStyle
+                : {}
+            }
+          >
+            <i
+              dangerouslySetInnerHTML={{
+                __html: mouseTool.icon.getIconSVGString(),
+              }}
+            />
+          </Button>
+        ))}
+      </Grid>
+      <Grid
+        item
+        xs={12}
+        style={{
+          cursor: toolCursorStyle,
+        }}
+      >
+        <CornerstoneViewport
+          imageIds={urls}
+          style={{ minWidth: '100%', height: '512px', flex: '1' }}
+          onElementEnabled={event => {
+            setElement(event.detail.element);
+          }}
+        />
+      </Grid>
+    </Grid>
   );
 }
 
