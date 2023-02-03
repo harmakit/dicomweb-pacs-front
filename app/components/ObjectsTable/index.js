@@ -86,6 +86,7 @@ function getColumns(objectType) {
             />
           ),
           minWidth: '10%',
+          format: value => (Array.isArray(value) ? value.join(', ') : value),
         },
         {
           id: FIELD_REFERRING_PHYSICIAN_NAME,
@@ -404,9 +405,7 @@ export default function ObjectsTable({
                     const value = row[column.id];
                     return (
                       <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === 'number'
-                          ? column.format(value)
-                          : value}
+                        {column.format ? column.format(value) : value}
                       </TableCell>
                     );
                   })}
