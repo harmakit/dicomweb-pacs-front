@@ -25,12 +25,12 @@ import {
 import { loadInstances } from './actions';
 import Backdrop from '../../components/Backdrop';
 import ErrorAlert from '../../components/ErrorAlert';
-import Instance from '../../utils/dicom/parser/instance';
+import Instance from '../../service/dicom/parser/instance';
 import { key } from './key';
-import imageHelper from '../../utils/dicom/wado/imageHelper';
+import imageHelper from '../../service/dicom/wado/imageHelper';
 import WADOImageViewer from '../../components/WADOImageViewer';
-import Study from '../../utils/dicom/parser/study';
-import Series from '../../utils/dicom/parser/series';
+import Study from '../../service/dicom/parser/study';
+import Series from '../../service/dicom/parser/series';
 
 export function DashboardViewImagesPage({
   instances,

@@ -1,8 +1,20 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { instanceObjectLoaded, instanceObjectLoadingError } from './actions';
-import { LOAD_INSTANCE_OBJECT } from './constants';
-import ObjectsManager from '../../utils/objectsManager';
-import Instance from '../../utils/dicom/parser/instance';
+import {
+  instanceObjectLoaded,
+  instanceObjectLoadingError,
+  toolsDataLoaded,
+  toolsDataLoadingError,
+  toolsDataUpdated,
+  toolsDataUpdatingError,
+} from './actions';
+import {
+  LOAD_INSTANCE_OBJECT,
+  LOAD_TOOLS_DATA,
+  UPDATE_TOOLS_DATA,
+} from './constants';
+import ObjectsManager from '../../service/objectsManager';
+import Instance from '../../service/dicom/parser/instance';
+import ToolsDataManager from '../../service/toolsDataManager';
 
 export function* getInstanceObject({ instanceUID }) {
   try {
@@ -18,6 +30,28 @@ export function* getInstanceObject({ instanceUID }) {
   }
 }
 
+export function* loadToolsData({ instanceUID }) {
+  try {
+    const toolsData = yield call(() => ToolsDataManager.load(instanceUID));
+    yield put(toolsDataLoaded(toolsData));
+  } catch (err) {
+    yield put(toolsDataLoadingError(err));
+  }
+}
+
+export function* updateToolsData({ instanceUID, toolsData }) {
+  try {
+    const updatedToolsData = yield call(() =>
+      ToolsDataManager.update(instanceUID, toolsData),
+    );
+    yield put(toolsDataUpdated(updatedToolsData));
+  } catch (err) {
+    yield put(toolsDataUpdatingError(err));
+  }
+}
+
 export default function* data() {
   yield takeLatest(LOAD_INSTANCE_OBJECT, getInstanceObject);
+  yield takeLatest(LOAD_TOOLS_DATA, loadToolsData);
+  yield takeLatest(UPDATE_TOOLS_DATA, updateToolsData);
 }

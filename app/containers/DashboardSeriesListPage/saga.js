@@ -1,4 +1,4 @@
-import { put, takeLatest, call } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import {
   loadTotalSeriesCountError,
   loadTotalSeriesCountLoaded,
@@ -11,9 +11,9 @@ import {
   LOAD_SERIES_TOTAL_COUNT,
   LOAD_STUDY_OBJECT,
 } from './constants';
-import ObjectsManager from '../../utils/objectsManager';
-import Study from '../../utils/dicom/parser/study';
-import Series from '../../utils/dicom/parser/series';
+import ObjectsManager from '../../service/objectsManager';
+import Study from '../../service/dicom/parser/study';
+import Series from '../../service/dicom/parser/series';
 
 export function* getStudyObject({ studyUID }) {
   try {

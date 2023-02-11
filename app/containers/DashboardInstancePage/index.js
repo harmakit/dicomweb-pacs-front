@@ -13,21 +13,25 @@ import {
   makeSelectErrors,
   makeSelectInstanceObject,
   makeSelectLoading,
+  makeSelectToolsData,
 } from './selectors';
-import { loadInstanceObject } from './actions';
+import { loadInstanceObject, loadToolsData, updateToolsData } from './actions';
 import Backdrop from '../../components/Backdrop';
 import ErrorAlert from '../../components/ErrorAlert';
-import Instance from '../../utils/dicom/parser/instance';
+import Instance from '../../service/dicom/parser/instance';
 import { key } from './key';
-import imageHelper from '../../utils/dicom/wado/imageHelper';
+import imageHelper from '../../service/dicom/wado/imageHelper';
 import WADOImageViewer from '../../components/WADOImageViewer';
 import DicomObjectInfo from '../../components/DicomObjectInfo';
 
 export function DashboardInstancePage({
   instanceObject,
+  toolsData,
   loading,
   errors,
   dispatchLoadInstanceObject,
+  dispatchLoadToolsData,
+  dispatchUpdateToolsData,
 }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
@@ -40,6 +44,7 @@ export function DashboardInstancePage({
 
   useEffect(() => {
     dispatchLoadInstanceObject(instanceId);
+    dispatchLoadToolsData(instanceId);
   }, [instanceId]);
 
   if (wrongObjectLoaded) {
@@ -58,7 +63,14 @@ export function DashboardInstancePage({
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Paper sx={{ mt: 2 }}>
-              {url && <WADOImageViewer urls={[url]} />}
+              {url && (
+                <WADOImageViewer
+                  urls={[url]}
+                  toolsData={toolsData}
+                  showSingleImageTools
+                  onSave={data => dispatchUpdateToolsData(instanceId, data)}
+                />
+              )}
             </Paper>
           </Grid>
         </Grid>
@@ -69,13 +81,17 @@ export function DashboardInstancePage({
 
 DashboardInstancePage.propTypes = {
   instanceObject: PropTypes.instanceOf(Instance),
+  toolsData: PropTypes.object,
   loading: PropTypes.bool.isRequired,
   errors: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatchLoadInstanceObject: PropTypes.func.isRequired,
+  dispatchLoadToolsData: PropTypes.func.isRequired,
+  dispatchUpdateToolsData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   instanceObject: makeSelectInstanceObject(),
+  toolsData: makeSelectToolsData(),
   loading: makeSelectLoading(),
   errors: makeSelectErrors(),
 });
@@ -84,6 +100,9 @@ export function mapDispatchToProps(dispatch) {
   return {
     dispatchLoadInstanceObject: instanceUID =>
       dispatch(loadInstanceObject(instanceUID)),
+    dispatchLoadToolsData: instanceUID => dispatch(loadToolsData(instanceUID)),
+    dispatchUpdateToolsData: (instanceUID, data) =>
+      dispatch(updateToolsData(instanceUID, data)),
   };
 }
 

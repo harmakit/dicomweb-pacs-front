@@ -1,4 +1,4 @@
-import { put, takeLatest, call } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import {
   loadTotalStudiesCountError,
   loadTotalStudiesCountLoaded,
@@ -6,8 +6,8 @@ import {
   studiesLoadingError,
 } from './actions';
 import { LOAD_STUDIES, LOAD_STUDIES_TOTAL_COUNT } from './constants';
-import ObjectsManager from '../../utils/objectsManager';
-import Study from '../../utils/dicom/parser/study';
+import ObjectsManager from '../../service/objectsManager';
+import Study from '../../service/dicom/parser/study';
 
 export function* getStudies({ options }) {
   try {

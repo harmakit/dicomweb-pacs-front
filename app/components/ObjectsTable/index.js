@@ -24,7 +24,7 @@ import Study, {
   FIELD_STUDY_ID,
   FIELD_STUDY_INSTANCE_UID,
   FIELD_STUDY_TIME,
-} from '../../utils/dicom/parser/study';
+} from '../../service/dicom/parser/study';
 import { useInjectSaga } from '../../utils/injectSaga';
 import { allowedModes } from '../../utils/sagaInjectors';
 import Series, {
@@ -36,13 +36,13 @@ import Series, {
   FIELD_SCHEDULED_PROCEDURE_STEP_ID,
   FIELD_SERIES_INSTANCE_UID,
   FIELD_SERIES_NUMBER,
-} from '../../utils/dicom/parser/series';
+} from '../../service/dicom/parser/series';
 import Instance, {
   FIELD_INSTANCE_NUMBER,
   FIELD_SOP_CLASS_UID,
   FIELD_SOP_INSTANCE_UID,
-} from '../../utils/dicom/parser/instance';
-import DicomObjectWithIdAbstract from '../../utils/dicom/parser/objectWithId';
+} from '../../service/dicom/parser/instance';
+import DicomObjectWithIdAbstract from '../../service/dicom/parser/objectWithId';
 import FilterDialog from './FilterDialog';
 import messages from './messages';
 

@@ -24,12 +24,12 @@ import {
 import Backdrop from '../../components/Backdrop';
 import ErrorAlert from '../../components/ErrorAlert';
 import ObjectsTable from '../../components/ObjectsTable';
-import Series from '../../utils/dicom/parser/series';
-import Instance from '../../utils/dicom/parser/instance';
+import Series from '../../service/dicom/parser/series';
+import Instance from '../../service/dicom/parser/instance';
 import { key } from './key';
 import { routes } from '../../utils/history';
 import DicomObjectInfo from '../../components/DicomObjectInfo';
-import Study from '../../utils/dicom/parser/study';
+import Study from '../../service/dicom/parser/study';
 
 export function DashboardSeriesPage({
   seriesObject,

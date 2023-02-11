@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import CornerstoneViewport from 'react-cornerstone-viewport';
@@ -18,7 +19,6 @@ import {
 } from './tools';
 
 function initCornerstone() {
-  // Cornerstone Tools
   cornerstoneTools.external.cornerstone = cornerstone;
   cornerstoneTools.external.Hammer = Hammer;
   cornerstoneTools.external.cornerstoneMath = cornerstoneMath;
@@ -31,7 +31,6 @@ function initCornerstone() {
 
   cornerstoneTools.store.state.touchProximity = 40;
 
-  // IMAGE LOADER
   const assetPath = `${config.hostAddress}/static`;
   cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
   cornerstoneWADOImageLoader.external.dicomParser = dicomParser;
@@ -78,16 +77,20 @@ function getMouseTools() {
     {
       class: cornerstoneTools.FreehandRoiTool,
       icon: freehandRoiCursor,
+      showIfSingleImage: true,
     },
     {
       class: cornerstoneTools.EraserTool,
       icon: eraserCursor,
+      showIfSingleImage: true,
     },
   ];
 }
 
+const VIEWER_TOOLS_INITIALIZING_TIMEOUT = 300;
+
 function ImageViewer(props) {
-  const { urls } = props;
+  const { urls, onSave, showSingleImageTools, toolsData } = props;
   const [element, setElement] = useState(null);
   const [initialized, setInitialized] = useState(false);
   const [activeTool, setActiveTool] = useState(null);
@@ -103,10 +106,15 @@ function ImageViewer(props) {
   // add tools
   useEffect(() => {
     if (element) {
+      // add mouse tools
       getMouseTools().forEach(mouseTool => {
+        if (!showSingleImageTools && mouseTool.showIfSingleImage) {
+          return;
+        }
         cornerstoneTools.addToolForElement(element, mouseTool.class);
       });
 
+      // add pan tool with right mouse button
       cornerstoneTools.addToolForElement(element, cornerstoneTools.PanTool);
       cornerstoneTools.setToolActiveForElement(
         element,
@@ -116,25 +124,55 @@ function ImageViewer(props) {
         },
       );
 
+      // add scrolling, zooming and panning tools
       getDefaultTools().forEach(tool => {
         cornerstoneTools.addToolForElement(element, tool);
-        // eslint-disable-next-line new-cap
         cornerstoneTools.setToolActiveForElement(element, new tool().name, {});
       });
 
+      // activate every tool to avoid tools data loading issues
+      getMouseTools().forEach(mouseTool => {
+        if (!showSingleImageTools && mouseTool.showIfSingleImage) {
+          return;
+        }
+        activateTool(mouseTool);
+      });
+
+      // activate first tool
       activateTool(getMouseTools()[0]);
     }
   }, [element]);
 
-  const handleToolButtonClick = mouseTool => {
-    activateTool(mouseTool);
-  };
+  // load tools data
+  useEffect(() => {
+    if (!initialized || !element || !toolsData) {
+      return;
+    }
+
+    // wait for cornerstone to initialize tools
+    setTimeout(() => {
+      getMouseTools().forEach(mouseTool => {
+        if (
+          !toolsData?.[mouseTool.class.name] ||
+          !Array.isArray(toolsData?.[mouseTool.class.name])
+        ) {
+          return;
+        }
+
+        const { name } = new mouseTool.class();
+        cornerstoneTools.clearToolState(element, name);
+        toolsData[mouseTool.class.name].forEach(toolData => {
+          cornerstoneTools.addToolState(element, name, toolData);
+        });
+      });
+      cornerstone.updateImage(element);
+    }, VIEWER_TOOLS_INITIALIZING_TIMEOUT);
+  }, [toolsData, initialized, element]);
 
   const activateTool = mouseTool => {
     setActiveTool(mouseTool);
     cornerstoneTools.setToolActiveForElement(
       element,
-      // eslint-disable-next-line new-cap
       new mouseTool.class().name,
       { mouseButtonMask: 1 },
     );
@@ -146,39 +184,165 @@ function ImageViewer(props) {
       const blobURL = window.URL.createObjectURL(
         activeTool.icon.getIconWithPointerSVG(),
       );
-      style = `url("${blobURL}") 0 0, auto`;
+      style = `url("${blobURL}") 8 8, auto`;
     }
     return style;
   }, [activeTool]);
-
-  if (!initialized || !shouldRenderImages) {
-    return null;
-  }
 
   const activeButtonStyle = {
     backgroundColor: '#2f2f2f',
   };
 
+  const prepareSaveData = () => {
+    const data = {};
+    const saveableTools = [cornerstoneTools.FreehandRoiTool];
+    getMouseTools().forEach(mouseTool => {
+      if (!saveableTools.includes(mouseTool.class)) {
+        return;
+      }
+
+      const { name } = new mouseTool.class();
+      const toolState = cornerstoneTools.getToolState(element, name);
+      if (toolState) {
+        data[mouseTool.class.name] = toolState.data;
+      }
+    });
+    return data;
+  };
+
+  const handleToolButtonClick = mouseTool => {
+    activateTool(mouseTool);
+  };
+
+  const handleSaveButtonClick = () => {
+    const data = prepareSaveData();
+    onSave(data);
+  };
+
+  const handleExportButtonClick = () => {
+    const freehandRoiToolData =
+      prepareSaveData()[cornerstoneTools.FreehandRoiTool.name] || [];
+    const contours = [];
+    freehandRoiToolData.forEach(roi => {
+      if (
+        !roi.handles ||
+        roi.handles.invalidHandlePlacement ||
+        roi.handles.points.length < 3
+      ) {
+        return;
+      }
+
+      const contour = roi.handles.points.map(point => ({
+        x: point.x,
+        y: point.y,
+      }));
+
+      contours.push(contour);
+    });
+
+    const imageUrl = new URL(
+      cornerstone.getImage(element).imageId.replace('wadouri:', ''),
+    );
+    const objectUID = imageUrl.searchParams.get('objectUID');
+    if (!objectUID) {
+      console.error('objectUID not found in image url', imageUrl);
+      return;
+    }
+
+    // download image from url
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.onload = function() {
+      const blob = xhr.response;
+      const file = new File([blob], `${objectUID}.dcm`, {
+        type: 'application/dicom',
+      });
+      const a = document.createElement('a');
+
+      a.href = URL.createObjectURL(file);
+      a.download = `${objectUID}.dcm`;
+      a.click();
+
+      URL.revokeObjectURL(a.href);
+    };
+    xhr.open('GET', imageUrl);
+    xhr.send();
+
+    // download contours
+    const blob = new Blob([JSON.stringify(contours)], {
+      type: 'application/json',
+    });
+    const file = new File([blob], `${objectUID}.json`, {
+      type: 'application/json',
+    });
+    const a = document.createElement('a');
+
+    a.href = URL.createObjectURL(file);
+    a.download = `${objectUID}.json`;
+    a.click();
+
+    URL.revokeObjectURL(a.href);
+  };
+
+  if (!initialized || !shouldRenderImages) {
+    return null;
+  }
+
+  const shouldShowSaveButton = showSingleImageTools && onSave !== undefined;
+  const shouldShowExportButton = showSingleImageTools;
+
   return (
     <Grid container>
-      <Grid item xs={12} style={{ backgroundColor: 'black' }}>
-        {getMouseTools().map(mouseTool => (
-          <Button
-            key={mouseTool.class.name}
-            onClick={() => handleToolButtonClick(mouseTool)}
-            style={
-              activeTool && activeTool.class.name === mouseTool.class.name
-                ? activeButtonStyle
-                : {}
-            }
-          >
-            <i
-              dangerouslySetInnerHTML={{
-                __html: mouseTool.icon.getIconSVGString(),
-              }}
-            />
-          </Button>
-        ))}
+      <Grid
+        container
+        item
+        xs={12}
+        style={{ backgroundColor: 'black', padding: 3 }}
+        justifyContent="space-between"
+      >
+        <Grid item>
+          {getMouseTools().map(mouseTool => {
+            const disabled =
+              !showSingleImageTools && mouseTool.showIfSingleImage;
+            return (
+              <Button
+                disabled={disabled}
+                key={mouseTool.class.name}
+                onClick={() => handleToolButtonClick(mouseTool)}
+                style={
+                  activeTool && activeTool.class.name === mouseTool.class.name
+                    ? activeButtonStyle
+                    : {}
+                }
+              >
+                <i
+                  style={{ opacity: disabled ? 0.3 : 1 }}
+                  dangerouslySetInnerHTML={{
+                    __html: mouseTool.icon.getIconSVGString(),
+                  }}
+                />
+              </Button>
+            );
+          })}
+        </Grid>
+        <Grid item>
+          {shouldShowSaveButton && (
+            <Button
+              style={{ color: 'greenyellow' }}
+              onClick={handleSaveButtonClick}
+            >
+              Save
+            </Button>
+          )}
+          {shouldShowExportButton && (
+            <Button
+              style={{ color: 'greenyellow' }}
+              onClick={handleExportButtonClick}
+            >
+              Export
+            </Button>
+          )}
+        </Grid>
       </Grid>
       <Grid
         item
@@ -201,6 +365,16 @@ function ImageViewer(props) {
 
 ImageViewer.propTypes = {
   urls: PropTypes.arrayOf(PropTypes.string),
+  toolsData: PropTypes.object,
+  showSingleImageTools: PropTypes.bool,
+  onSave: PropTypes.func,
+};
+
+ImageViewer.defaultProps = {
+  urls: [],
+  toolsData: {},
+  showSingleImageTools: false,
+  onSave: undefined,
 };
 
 export default ImageViewer;

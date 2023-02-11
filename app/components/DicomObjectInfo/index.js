@@ -15,10 +15,10 @@ import PreviewIcon from '@mui/icons-material/Preview';
 import { generatePath } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { routes } from '../../utils/history';
-import Study from '../../utils/dicom/parser/study';
-import Series from '../../utils/dicom/parser/series';
-import Instance from '../../utils/dicom/parser/instance';
-import DicomObjectWithIdAbstract from '../../utils/dicom/parser/objectWithId';
+import Study from '../../service/dicom/parser/study';
+import Series from '../../service/dicom/parser/series';
+import Instance from '../../service/dicom/parser/instance';
+import DicomObjectWithIdAbstract from '../../service/dicom/parser/objectWithId';
 import messages from './messages';
 
 export default function DicomObjectInfo({ object }) {
@@ -78,6 +78,8 @@ export default function DicomObjectInfo({ object }) {
     }
   };
 
+  const shouldShowPreviewButton = object.constructor !== Instance;
+
   return (
     <Accordion expanded={expanded} onChange={handleAccordionToggle}>
       <AccordionSummary>
@@ -91,13 +93,15 @@ export default function DicomObjectInfo({ object }) {
             </Typography>
           </Grid>
           <Grid item xs={2} container justifyContent="flex-end">
-            <Grid item>
-              <Tooltip title={<FormattedMessage {...messages.viewImage} />}>
-                <IconButton onClick={handlePreviewClick}>
-                  <PreviewIcon />
-                </IconButton>
-              </Tooltip>
-            </Grid>
+            {shouldShowPreviewButton && (
+              <Grid item>
+                <Tooltip title={<FormattedMessage {...messages.viewImage} />}>
+                  <IconButton onClick={handlePreviewClick}>
+                    <PreviewIcon />
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+            )}
             <Grid>
               <IconButton>
                 <ExpandMoreIcon />
