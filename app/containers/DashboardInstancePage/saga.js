@@ -15,7 +15,7 @@ import {
 } from './constants';
 import ObjectsManager from '../../services/objectsManager';
 import Instance from '../../services/dicom/parser/instance';
-import ToolsDataManager from '../../services/toolsDataManager';
+import ApiManager from '../../services/apiManager';
 
 export function* getInstanceObject({ instanceUID }) {
   try {
@@ -34,7 +34,7 @@ export function* getInstanceObject({ instanceUID }) {
 export function* loadToolsData({ instanceUID }) {
   try {
     yield put(clearToolsData());
-    const toolsData = yield call(() => ToolsDataManager.load(instanceUID));
+    const toolsData = yield call(() => ApiManager.loadToolsData(instanceUID));
     yield put(toolsDataLoaded(toolsData));
   } catch (err) {
     yield put(toolsDataLoadingError(err));
@@ -44,7 +44,7 @@ export function* loadToolsData({ instanceUID }) {
 export function* updateToolsData({ instanceUID, toolsData }) {
   try {
     const updatedToolsData = yield call(() =>
-      ToolsDataManager.update(instanceUID, toolsData),
+      ApiManager.updateToolsData(instanceUID, toolsData),
     );
     yield put(toolsDataUpdated(updatedToolsData));
   } catch (err) {

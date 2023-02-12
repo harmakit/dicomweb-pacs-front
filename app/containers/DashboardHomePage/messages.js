@@ -3,10 +3,13 @@ import { defineMessages } from 'react-intl';
 export const scope = 'app.containers.DashboardHomePage';
 
 export default defineMessages({
-  openStudies: {
-    id: `${scope}.openStudies`,
+  dicomObjects: {
+    id: `${scope}.dicomObjects`,
   },
-  openUpload: {
-    id: `${scope}.openUpload`,
+  patientsCount: {
+    id: `${scope}.patientsCount`,
+  },
+  modalities: {
+    id: `${scope}.modalities`,
   },
 });

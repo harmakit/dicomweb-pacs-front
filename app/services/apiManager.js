@@ -1,15 +1,22 @@
 import config from '../params';
 import request from '../utils/request';
 
-class ToolsDataManager {
-  load(instanceUID) {
+class ApiManager {
+  loadSummaryData() {
+    const url = `${config.backendUrl}/api/summary`;
+    return request(url, {
+      method: 'GET',
+    });
+  }
+
+  loadToolsData(instanceUID) {
     const url = `${config.backendUrl}/api/instance/${instanceUID}/tools`;
     return request(url, {
       method: 'GET',
     });
   }
 
-  update(instanceUID, toolsData) {
+  updateToolsData(instanceUID, toolsData) {
     const url = `${config.backendUrl}/api/instance/${instanceUID}/tools`;
     return request(url, {
       method: 'PUT',
@@ -18,5 +25,5 @@ class ToolsDataManager {
   }
 }
 
-const toolsDataManager = new ToolsDataManager();
-export default toolsDataManager;
+const apiManager = new ApiManager();
+export default apiManager;
