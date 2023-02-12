@@ -19,7 +19,7 @@ import { loadStudies, loadTotalStudiesCount } from './actions';
 import Backdrop from '../../components/Backdrop';
 import ErrorAlert from '../../components/ErrorAlert';
 import ObjectsTable from '../../components/ObjectsTable';
-import Study from '../../service/dicom/parser/study';
+import Study from '../../services/dicom/parser/study';
 import { routes } from '../../utils/history';
 import { key } from './key';
 

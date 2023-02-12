@@ -15,6 +15,8 @@ export const UPDATE_TOOLS_DATA_ERROR =
 
 export const LOAD_TOOLS_DATA = 'app/DashboardInstancePage/LOAD_TOOLS_DATA';
 
+export const CLEAR_TOOLS_DATA = 'app/DashboardInstancePage/CLEAR_TOOLS_DATA';
+
 export const LOAD_TOOLS_DATA_SUCCESS =
   'app/DashboardInstancePage/LOAD_TOOLS_DATA_SUCCESS';
 

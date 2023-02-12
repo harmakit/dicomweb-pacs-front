@@ -11,9 +11,9 @@ import {
   LOAD_SERIES_TOTAL_COUNT,
   LOAD_STUDY_OBJECT,
 } from './constants';
-import ObjectsManager from '../../service/objectsManager';
-import Study from '../../service/dicom/parser/study';
-import Series from '../../service/dicom/parser/series';
+import ObjectsManager from '../../services/objectsManager';
+import Study from '../../services/dicom/parser/study';
+import Series from '../../services/dicom/parser/series';
 
 export function* getStudyObject({ studyUID }) {
   try {

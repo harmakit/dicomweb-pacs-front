@@ -24,7 +24,7 @@ import Study, {
   FIELD_STUDY_ID,
   FIELD_STUDY_INSTANCE_UID,
   FIELD_STUDY_TIME,
-} from '../../service/dicom/parser/study';
+} from '../../services/dicom/parser/study';
 import { useInjectSaga } from '../../utils/injectSaga';
 import { allowedModes } from '../../utils/sagaInjectors';
 import Series, {
@@ -36,20 +36,23 @@ import Series, {
   FIELD_SCHEDULED_PROCEDURE_STEP_ID,
   FIELD_SERIES_INSTANCE_UID,
   FIELD_SERIES_NUMBER,
-} from '../../service/dicom/parser/series';
+} from '../../services/dicom/parser/series';
 import Instance, {
   FIELD_INSTANCE_NUMBER,
   FIELD_SOP_CLASS_UID,
   FIELD_SOP_INSTANCE_UID,
-} from '../../service/dicom/parser/instance';
-import DicomObjectWithIdAbstract from '../../service/dicom/parser/objectWithId';
+} from '../../services/dicom/parser/instance';
+import DicomObjectWithIdAbstract from '../../services/dicom/parser/objectWithId';
 import FilterDialog from './FilterDialog';
 import messages from './messages';
+import useLocalStorage from '../../hooks/useLocalStorageHook';
 
 export const PAGINATION_DEFAULT_PAGE = 0;
 export const PAGINATION_ROWS_PER_PAGE_OPTIONS = [5, 10, 25, 100];
 export const PAGINATION_DEFAULT_ROWS_PER_PAGE =
   PAGINATION_ROWS_PER_PAGE_OPTIONS[0];
+
+const LOCAL_STORAGE_PAGINATION_KEY = 'rows_per_page';
 
 function getColumns(objectType) {
   switch (objectType) {
@@ -254,7 +257,8 @@ export default function ObjectsTable({
 }) {
   useInjectSaga(injectSaga);
   const [page, setPage] = useState(PAGINATION_DEFAULT_PAGE);
-  const [rowsPerPage, setRowsPerPage] = useState(
+  const [rowsPerPage, setRowsPerPage] = useLocalStorage(
+    LOCAL_STORAGE_PAGINATION_KEY,
     PAGINATION_DEFAULT_ROWS_PER_PAGE,
   );
   const [filters, setFilters] = useState(new Map());
@@ -313,6 +317,7 @@ export default function ObjectsTable({
     options.queryParams = {
       ...options.queryParams,
       includefield: objectType.getFieldAttribute(rowKeyField),
+      limit: 0,
     };
     dispatchLoadTotalObjectsCount(options);
   };

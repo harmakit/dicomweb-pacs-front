@@ -145,9 +145,15 @@ function ImageViewer(props) {
 
   // load tools data
   useEffect(() => {
-    if (!initialized || !element || !toolsData) {
+    if (!initialized || !element) {
       return;
     }
+
+    // clear all tools data
+    getMouseTools().forEach(mouseTool => {
+      const { name } = new mouseTool.class();
+      cornerstoneTools.clearToolState(element, name);
+    });
 
     // wait for cornerstone to initialize tools
     setTimeout(() => {
@@ -160,11 +166,11 @@ function ImageViewer(props) {
         }
 
         const { name } = new mouseTool.class();
-        cornerstoneTools.clearToolState(element, name);
         toolsData[mouseTool.class.name].forEach(toolData => {
           cornerstoneTools.addToolState(element, name, toolData);
         });
       });
+
       cornerstone.updateImage(element);
     }, VIEWER_TOOLS_INITIALIZING_TIMEOUT);
   }, [toolsData, initialized, element]);

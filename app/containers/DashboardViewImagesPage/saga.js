@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import ObjectsManager from '../../service/objectsManager';
-import Instance from '../../service/dicom/parser/instance';
+import ObjectsManager from '../../services/objectsManager';
+import Instance from '../../services/dicom/parser/instance';
 import { instancesLoaded, instancesLoadingError } from './actions';
 import { LOAD_INSTANCES } from './constants';
 

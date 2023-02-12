@@ -15,10 +15,10 @@ import PreviewIcon from '@mui/icons-material/Preview';
 import { generatePath } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { routes } from '../../utils/history';
-import Study from '../../service/dicom/parser/study';
-import Series from '../../service/dicom/parser/series';
-import Instance from '../../service/dicom/parser/instance';
-import DicomObjectWithIdAbstract from '../../service/dicom/parser/objectWithId';
+import Study from '../../services/dicom/parser/study';
+import Series from '../../services/dicom/parser/series';
+import Instance from '../../services/dicom/parser/instance';
+import DicomObjectWithIdAbstract from '../../services/dicom/parser/objectWithId';
 import messages from './messages';
 
 export default function DicomObjectInfo({ object }) {

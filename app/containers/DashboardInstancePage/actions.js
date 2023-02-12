@@ -1,4 +1,5 @@
 import {
+  CLEAR_TOOLS_DATA,
   LOAD_INSTANCE_OBJECT,
   LOAD_INSTANCE_OBJECT_ERROR,
   LOAD_INSTANCE_OBJECT_SUCCESS,
@@ -36,6 +37,12 @@ export function loadToolsData(instanceUID) {
   return {
     type: LOAD_TOOLS_DATA,
     instanceUID,
+  };
+}
+
+export function clearToolsData() {
+  return {
+    type: CLEAR_TOOLS_DATA,
   };
 }
 

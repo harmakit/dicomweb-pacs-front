@@ -9,12 +9,12 @@ import {
   FIELD_STUDY_ID,
   FIELD_STUDY_INSTANCE_UID,
   FIELD_STUDY_TIME,
-} from '../../service/dicom/parser/study';
+} from '../../services/dicom/parser/study';
 import {
   FIELD_INSTANCE_NUMBER,
   FIELD_SOP_CLASS_UID,
   FIELD_SOP_INSTANCE_UID,
-} from '../../service/dicom/parser/instance';
+} from '../../services/dicom/parser/instance';
 import {
   FIELD_MODALITY,
   FIELD_PERFORMED_PROCEDURE_STEP_START_DATE,
@@ -24,7 +24,7 @@ import {
   FIELD_SCHEDULED_PROCEDURE_STEP_ID,
   FIELD_SERIES_INSTANCE_UID,
   FIELD_SERIES_NUMBER,
-} from '../../service/dicom/parser/series';
+} from '../../services/dicom/parser/series';
 
 export const scope = 'app.components.ObjectsTable';
 

@@ -6,8 +6,8 @@ import {
   studiesLoadingError,
 } from './actions';
 import { LOAD_STUDIES, LOAD_STUDIES_TOTAL_COUNT } from './constants';
-import ObjectsManager from '../../service/objectsManager';
-import Study from '../../service/dicom/parser/study';
+import ObjectsManager from '../../services/objectsManager';
+import Study from '../../services/dicom/parser/study';
 
 export function* getStudies({ options }) {
   try {

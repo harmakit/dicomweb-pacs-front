@@ -12,9 +12,9 @@ import {
   LOAD_INSTANCES_TOTAL_COUNT,
   LOAD_SERIES_OBJECT,
 } from './constants';
-import ObjectsManager from '../../service/objectsManager';
-import Series from '../../service/dicom/parser/series';
-import Instance from '../../service/dicom/parser/instance';
+import ObjectsManager from '../../services/objectsManager';
+import Series from '../../services/dicom/parser/series';
+import Instance from '../../services/dicom/parser/instance';
 
 export function* getSeriesObject({ seriesUID }) {
   try {

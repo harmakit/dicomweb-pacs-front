@@ -1,5 +1,6 @@
 import produce from 'immer';
 import {
+  CLEAR_TOOLS_DATA,
   LOAD_INSTANCE_OBJECT,
   LOAD_INSTANCE_OBJECT_ERROR,
   LOAD_INSTANCE_OBJECT_SUCCESS,
@@ -48,6 +49,9 @@ const reducer = (state = initialState, action) =>
       case LOAD_TOOLS_DATA:
         draft.toolsDataLoading = true;
         draft.toolsDataLoadingError = false;
+        break;
+      case CLEAR_TOOLS_DATA:
+        draft.toolsData = null;
         break;
       case LOAD_TOOLS_DATA_SUCCESS:
         draft.toolsDataLoading = false;

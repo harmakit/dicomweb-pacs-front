@@ -1,5 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import {
+  clearToolsData,
   instanceObjectLoaded,
   instanceObjectLoadingError,
   toolsDataLoaded,
@@ -12,9 +13,9 @@ import {
   LOAD_TOOLS_DATA,
   UPDATE_TOOLS_DATA,
 } from './constants';
-import ObjectsManager from '../../service/objectsManager';
-import Instance from '../../service/dicom/parser/instance';
-import ToolsDataManager from '../../service/toolsDataManager';
+import ObjectsManager from '../../services/objectsManager';
+import Instance from '../../services/dicom/parser/instance';
+import ToolsDataManager from '../../services/toolsDataManager';
 
 export function* getInstanceObject({ instanceUID }) {
   try {
@@ -32,6 +33,7 @@ export function* getInstanceObject({ instanceUID }) {
 
 export function* loadToolsData({ instanceUID }) {
   try {
+    yield put(clearToolsData());
     const toolsData = yield call(() => ToolsDataManager.load(instanceUID));
     yield put(toolsDataLoaded(toolsData));
   } catch (err) {
