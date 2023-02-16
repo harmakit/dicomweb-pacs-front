@@ -18,6 +18,12 @@ import {
   zoomCursor,
 } from './tools';
 
+const TOOL_WWWC_NAME = 'WwwcTool';
+const TOOL_WWWC_REGION_NAME = 'WwwcRegionTool';
+const TOOL_ZOOM_NAME = 'ZoomTool';
+const TOOL_FREEHAND_ROI_NAME = 'FreehandRoiTool';
+const TOOL_ERASER_NAME = 'EraserTool';
+
 function initCornerstone() {
   cornerstoneTools.external.cornerstone = cornerstone;
   cornerstoneTools.external.Hammer = Hammer;
@@ -63,23 +69,28 @@ function getDefaultTools() {
 function getMouseTools() {
   return [
     {
+      name: TOOL_WWWC_NAME,
       class: cornerstoneTools.WwwcTool,
       icon: wwwcCursor,
     },
     {
+      name: TOOL_WWWC_REGION_NAME,
       class: cornerstoneTools.WwwcRegionTool,
       icon: wwwcRegionCursor,
     },
     {
+      name: TOOL_ZOOM_NAME,
       class: cornerstoneTools.ZoomTool,
       icon: zoomCursor,
     },
     {
+      name: TOOL_FREEHAND_ROI_NAME,
       class: cornerstoneTools.FreehandRoiTool,
       icon: freehandRoiCursor,
       showIfSingleImage: true,
     },
     {
+      name: TOOL_ERASER_NAME,
       class: cornerstoneTools.EraserTool,
       icon: eraserCursor,
       showIfSingleImage: true,
@@ -159,14 +170,14 @@ function ImageViewer(props) {
     setTimeout(() => {
       getMouseTools().forEach(mouseTool => {
         if (
-          !toolsData?.[mouseTool.class.name] ||
-          !Array.isArray(toolsData?.[mouseTool.class.name])
+          !toolsData?.[mouseTool.name] ||
+          !Array.isArray(toolsData?.[mouseTool.name])
         ) {
           return;
         }
 
         const { name } = new mouseTool.class();
-        toolsData[mouseTool.class.name].forEach(toolData => {
+        toolsData[mouseTool.name].forEach(toolData => {
           cornerstoneTools.addToolState(element, name, toolData);
         });
       });
@@ -210,7 +221,7 @@ function ImageViewer(props) {
       const { name } = new mouseTool.class();
       const toolState = cornerstoneTools.getToolState(element, name);
       if (toolState) {
-        data[mouseTool.class.name] = toolState.data;
+        data[mouseTool.name] = toolState.data;
       }
     });
     return data;
@@ -226,8 +237,7 @@ function ImageViewer(props) {
   };
 
   const handleExportButtonClick = () => {
-    const freehandRoiToolData =
-      prepareSaveData()[cornerstoneTools.FreehandRoiTool.name] || [];
+    const freehandRoiToolData = prepareSaveData()[TOOL_FREEHAND_ROI_NAME] || [];
     const contours = [];
     freehandRoiToolData.forEach(roi => {
       if (
@@ -313,10 +323,10 @@ function ImageViewer(props) {
             return (
               <Button
                 disabled={disabled}
-                key={mouseTool.class.name}
+                key={mouseTool.name}
                 onClick={() => handleToolButtonClick(mouseTool)}
                 style={
-                  activeTool && activeTool.class.name === mouseTool.class.name
+                  activeTool && activeTool.class === mouseTool.class
                     ? activeButtonStyle
                     : {}
                 }
