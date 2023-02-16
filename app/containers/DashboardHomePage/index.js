@@ -1,5 +1,5 @@
 import React, { memo, useEffect } from 'react';
-import { Box, Grid, Paper, Typography } from '@mui/material';
+import { Box, Grid, Link, Paper, Typography } from '@mui/material';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -180,9 +180,12 @@ function DashboardHomePage({
           <Typography variant="caption" color="initial">
             {'{ '}
             made with ❤️ by harmakit;{' '}
-            <a target="_blank" href="https://github.com/harmakit/dicomweb-pacs">
+            <Link
+              href="https://github.com/harmakit/dicomweb-pacs"
+              target="_blank"
+            >
               github
-            </a>
+            </Link>
             {' }'}
           </Typography>
         </Box>
