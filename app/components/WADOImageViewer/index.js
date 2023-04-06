@@ -106,10 +106,44 @@ function ImageViewer(props) {
   const [initialized, setInitialized] = useState(false);
   const [activeTool, setActiveTool] = useState(null);
   const shouldRenderImages = Array.isArray(urls) && urls.length !== 0;
+  const [loadUrls, setLoadUrls] = useState(urls);
 
-  useEffect(() => {
+  const transformUrlsToFramedUrlsIfNecessary = async () => {
+    const processedUrls = [];
+    const promises = [];
+    urls.forEach(url => {
+      const promise = cornerstoneWADOImageLoader.wadouri.dataSetCacheManager
+        .load(
+          url.replace('wadouri:', ''),
+          cornerstoneWADOImageLoader.internal.xhrRequest,
+        )
+        .then(dataSet => {
+          const framesCount = dataSet.intString('x00280008');
+          if (!framesCount) {
+            processedUrls.push(url);
+          } else {
+            for (let frame = 0; frame < framesCount; frame += 1) {
+              processedUrls.push(`${url}?frame=${frame}`);
+            }
+          }
+        });
+      promises.push(promise);
+    });
+    await Promise.all(promises);
+    return processedUrls;
+  };
+
+  useEffect(async () => {
     if (shouldRenderImages && !initialized) {
       initCornerstone();
+
+      if (urls.length === 1) {
+        const processedUrls = await transformUrlsToFramedUrlsIfNecessary();
+        setLoadUrls(processedUrls);
+      } else {
+        setLoadUrls(urls);
+      }
+
       setInitialized(true);
     }
   }, []);
@@ -368,7 +402,7 @@ function ImageViewer(props) {
         }}
       >
         <CornerstoneViewport
-          imageIds={urls}
+          imageIds={loadUrls}
           style={{ minWidth: '100%', height: '512px', flex: '1' }}
           onElementEnabled={event => {
             setElement(event.detail.element);
